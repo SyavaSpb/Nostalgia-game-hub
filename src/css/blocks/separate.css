@@ -1,0 +1,7 @@
+.separate {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  margin-top: 8px;
+}

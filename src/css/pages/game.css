@@ -1,0 +1,41 @@
+@import url('../components/text.css');
+@import url('../fonts/fonts.css');
+@import url('../blocks/box.css');
+@import url('../blocks/container.css');
+@import url('../blocks/separate.css');
+
+* {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #185975;
+}
+
+.header {
+  text-align: center;
+}
+
+.information {
+  width: 24%;
+}
+
+.game {
+  width: 75%;
+}
+
+.games__item {
+  position: relative;
+  height: 25vh;
+  margin-bottom: 8px;
+}
+
+.games__tittle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

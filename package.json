@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/node"
+    "start": "node src/node"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/SyavaSpb/Nostalgia-game-hub/issues"
   },
-  "homepage": "https://github.com/SyavaSpb/Nostalgia-game-hub#readme"
+  "homepage": "https://github.com/SyavaSpb/Nostalgia-game-hub#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
 }
