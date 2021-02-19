@@ -1,8 +1,8 @@
 @font-face {
-    font-family: "Teletoon";
-    src: url("./TeletoonLowercaseV2-MwBP.ttf");
+  font-family: "Teletoon";
+  src: url("./TeletoonLowercaseV2-MwBP.ttf") format('truetype');
 }
 @font-face {
-    font-family: "Pixel";
-    src: url("./font-pixel.ttf");
+  font-family: "Pixel";
+  src: url("../fonts/font-pixel.ttf") format('truetype');
 }
