@@ -1,7 +1,7 @@
 const Player = require('./player.js')
 module.exports.Player = Player
 
-const Room = require('./Room.js')
+const Room = require('./room.js')
 module.exports.Room = Room
 
 const RoomManager = require('./roomManager.js')
