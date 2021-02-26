@@ -4,9 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "dev": "nodemon src/server",
-    "start": "node src/server",
-    "webpackCompile": "webpack"
+    "dev": "webpack && node server/server",
+    "start": "node server/server"
   },
   "repository": {
     "type": "git",
@@ -29,5 +28,9 @@
     "style-loader": "^2.0.0",
     "webpack": "^5.23.0",
     "webpack-cli": "^4.5.0"
+  },
+  "dependencies": {
+    "cell-games-front": "^1.1.2",
+    "lodash.clonedeep": "^4.5.0"
   }
 }

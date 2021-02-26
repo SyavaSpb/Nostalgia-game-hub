@@ -8,8 +8,10 @@ module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: 'development',
   entry: {
+    error: './error.js',
     index: './index.js',
-    game: './game.js'
+    game: './game.js',
+    sapper: './sapperconnect.js'
   },
   output: {
     filename: "[name].[contenthash].js",
@@ -32,6 +34,16 @@ module.exports = {
       template: './game.html',
       filename: 'game.html'
     }),
+    new HTMLWebpackPlugin({
+      chunks: ['sapper'],
+      template: './sapper.html',
+      filename: 'sapper.html'
+    }),
+    new HTMLWebpackPlugin({
+      chunks: ['error'],
+      template: './error.html',
+      filename: 'error.html'
+    }),
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [
@@ -50,7 +62,10 @@ module.exports = {
       {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader']
-        // use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.(png|jpg|svg|gif)$/,
+        use: ['file-loader']
       },
       {
         test: /\.(ttf|woff|woff2|eot)$/,

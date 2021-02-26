@@ -2,8 +2,11 @@
 .tittle-m { font-size: 30px; }
 .text-teletoon { font-family: "Teletoon"; }
 .text-pixel { font-family: "Pixel"; }
+.text-m { font-size: 20px; }
 .text-bold { font-weight: bold; }
 .text-up { text-transform: uppercase; }
 .text-clean { text-decoration: none; }
 .text-orange { color: #f0a830; }
 .text-white { color: #ffffff; }
+.back-red { background-color: #f03330; }
+.back-orange { background-color: #f0a830; }

@@ -1,0 +1,29 @@
+@import url('../components/text.css');
+@import url('../fonts/fonts.css');
+@import url('../blocks/box.css');
+@import url('../blocks/container.css');
+
+* {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #185975;
+}
+
+.error__tittle {
+  margin-top: 25px;
+  position: relative;
+  height: 40vh;
+  text-align: center;
+}
+
+.tittle-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
