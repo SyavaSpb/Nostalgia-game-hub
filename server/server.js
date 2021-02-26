@@ -1,4 +1,10 @@
-const config = require('../config.json').dev
+const config = require('../config.json')
+const modeBuild = process.env.NODE_ENV
+if (modeBuild == "dev") {
+  config = config.dev
+} else if (modeBuild == "prod") {
+  config = config.prod
+}
 const PORT = config.port
 const HOST = config.host
 
