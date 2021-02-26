@@ -1,3 +1,7 @@
+const config = require('../config.json').dev
+const PORT = config.port
+const HOST = config.host
+
 import './css/pages/sapper.css'
 import { Sapper } from './sapper.js'
 
@@ -63,7 +67,7 @@ function initGame() {
       player: me,
       move: {x: j, y: i}
     }
-    sendRequest('POST', "http://localhost:3000/gamerequest/makemove", body)
+    sendRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/makemove", body)
       .then(data => {
         console.log(data.log)
       })
@@ -79,7 +83,7 @@ function gameReq() {
   const body = {
     player: me
   }
-  sendRequest('POST', "http://localhost:3000/gamerequest/getgameinf", body)
+  sendRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/getgameinf", body)
     .then(data => {
       roomPlay(data.room)
       const playerList = document.querySelector('.information__players')
@@ -104,7 +108,7 @@ function roomReq() {
   const body = {
     player: me
   }
-  sendRequest('POST', "http://localhost:3000/gamerequest/getroominf", body)
+  sendRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/getroominf", body)
     .then(data => {
       if (data.room.state == "wait") {
         roomWaitingState(data.room)
@@ -131,7 +135,7 @@ buttonAuth.onclick = function() {
     const body = {
       player: me
     }
-    sendRequest('POST', "http://localhost:3000/gamerequest/getid", body)
+    sendRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/getid", body)
       .then(data => {
         me = data.player
         const authBlock = document.querySelector('.mainBlock__auth')
@@ -152,7 +156,7 @@ buttonAuth.onclick = function() {
 const buttonJoin = document.querySelector('.mainBlock__buttonJoin')
 buttonJoin.onclick = function() {
   const body = {player: me}
-  sendRequest('POST', "http://localhost:3000/gamerequest/joinroom", body)
+  sendRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/joinroom", body)
     .then(data => {
       const joinBlock = document.querySelector('.mainBlock__joinRoom')
       joinBlock.classList.add('hide')
@@ -170,7 +174,7 @@ buttonJoin.onclick = function() {
 const readyButton = document.querySelector('.mainBlock__buttonReady')
 readyButton.onclick = function() {
   const body = {player: me}
-  sendRequest('POST', "http://localhost:3000/gamerequest/ready", body)
+  sendRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/ready", body)
     .then(data => {
       me = data.player
     })
