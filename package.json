@@ -1,11 +1,11 @@
 {
   "name": "nostalgia-games-hub",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev && webpack && node server/server",
-    "start": "cross-env NODE_ENV=prod && webpack && node server/server"
+    "dev": "node config dev && webpack && node server/server",
+    "start": "node config prod && webpack && node server/server"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,6 @@
   },
   "dependencies": {
     "cell-games-front": "^1.1.2",
-    "cross-env": "^7.0.3",
     "lodash.clonedeep": "^4.5.0"
   }
 }

@@ -1,18 +1,12 @@
-const config = require('../config.json')
-const modeBuild = process.env.NODE_ENV
-if (modeBuild == "dev") {
-  config = config.dev
-} else if (modeBuild == "prod") {
-  config = config.prod
-}
+let config = require('../config.json')
 const PORT = config.port
-const HOST = config.host
 
 const http = require('http')
 const fs = require('fs')
 const path = require('path')
 const { Player, PlayerManager, Room, RoomManager } = require('./multiplayer/multiplayer')
 
+{
 // const SupperGame = require('./SupperServer.js')
 // const cupperGame = new SupperGame(8, 10, 10)
 // cupperGame.startGame()
@@ -28,6 +22,7 @@ const { Player, PlayerManager, Room, RoomManager } = require('./multiplayer/mult
 //   })
 //   console.log(string)
 // })
+}
 
 
 const roomManager = new RoomManager()
