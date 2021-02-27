@@ -1,10 +1,15 @@
-let config = require('../config.json')
+const config = require('../config.json')
 const PORT = config.port
 
 const http = require('http')
 const fs = require('fs')
 const path = require('path')
+const MongoClient = require("mongodb").MongoClient
+const mongoClient = new MongoClient("mongodb://localhost:27017/", { useUnifiedTopology: true })
+
 const { Player, PlayerManager, Room, RoomManager } = require('./multiplayer/multiplayer')
+const roomManager = new RoomManager()
+const playerManager = new PlayerManager()
 
 {
 // const SupperGame = require('./SupperServer.js')
@@ -24,10 +29,23 @@ const { Player, PlayerManager, Room, RoomManager } = require('./multiplayer/mult
 // })
 }
 
+function regUser(name) {
+  mongoClient.connect(function(err, client) {
+      if(err){
+        console.log('error connect')
+        return console.log(err)
+        return
+      }
 
-const roomManager = new RoomManager()
-const playerManager = new PlayerManager()
-
+      const db = client.db("nostalgic-games-hub-db");
+      const collection = db.collection("users");
+      const user = { name: name };
+      collection.insertOne(user)
+      // client.close();
+  })
+}
+regUser("Ivan1")
+// regUser("Ivan2")
 
 function getBody(req) {
   let body = '';
@@ -39,7 +57,6 @@ function getBody(req) {
     })
   })
 }
-
 
 const server = http.createServer((req, res) => {
   const requestUrl = req.url.split('/')
@@ -160,7 +177,6 @@ const server = http.createServer((req, res) => {
     })
   }
 })
-
 server.listen(PORT, () => {
   console.log(`Server has been started on ${PORT} port...`)
 })

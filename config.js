@@ -1,8 +1,10 @@
 const dev = {
+  mode: "development",
   host: "localhost",
   port: "3000"
 }
 const prod = {
+  mode: "production",
   host: "80.249.147.187",
   port: "80"
 }
