@@ -1,15 +1,32 @@
 const config = require('../config.json')
 const PORT = config.port
+const MONGOIP = config.mongoip
 
 const http = require('http')
 const fs = require('fs')
 const path = require('path')
-const MongoClient = require("mongodb").MongoClient
-const mongoClient = new MongoClient("mongodb://localhost:27017/", { useUnifiedTopology: true })
+const bcrypt = require('bcrypt')
 
 const { Player, PlayerManager, Room, RoomManager } = require('./multiplayer/multiplayer')
 const roomManager = new RoomManager()
 const playerManager = new PlayerManager()
+
+const MongoClient = require("mongodb").MongoClient
+const mongoClient = new MongoClient(
+  "mongodb://mongo-root:root@"+MONGOIP+":27017/?authSource=admin&readPreference=primary",
+  { useUnifiedTopology: true }
+)
+let db, collection
+mongoClient.connect(function(err, client) {
+    if (err) {
+      throw err
+    }
+    db = client.db("nostalgic-games-hub-db");
+    collection = db.collection("test");
+    // const user = { name: "Ivan1" }
+    // collection.insertOne(user)
+    // client.close();
+})
 
 {
 // const SupperGame = require('./SupperServer.js')
@@ -29,23 +46,6 @@ const playerManager = new PlayerManager()
 // })
 }
 
-function regUser(name) {
-  mongoClient.connect(function(err, client) {
-      if(err){
-        console.log('error connect')
-        return console.log(err)
-        return
-      }
-
-      const db = client.db("nostalgic-games-hub-db");
-      const collection = db.collection("users");
-      const user = { name: name };
-      collection.insertOne(user)
-      // client.close();
-  })
-}
-regUser("Ivan1")
-// regUser("Ivan2")
 
 function getBody(req) {
   let body = '';
@@ -141,6 +141,51 @@ const server = http.createServer((req, res) => {
           res.end(JSON.stringify(result))
         })
     }
+  } else if (requestUrl[0] == 'auth') {
+    if (requestUrl[1] == 'login') {
+      getBody(req)
+        .then(data => {
+
+        })
+    } else if (requestUrl[1] == 'reg') {
+      getBody(req)
+        .then(data => {
+          res.writeHead(200, { 'Content-Type': 'text/plain' })
+          const {login, password} = data
+          if (login.length < 5) {
+            res.end("login must be more than 4 symbols")
+          } else if (login.length > 12) {
+            res.end("login must be less than 12 symbols")
+          } if (password.length < 5) {
+            res.end("password must be more than 5 symbols")
+          } else if (password.length > 12) {
+            res.end("password must be less than 12 symbols")
+          }
+          new Promise((resolve, reject) => {
+            resolve(collection.find({login: login}).toArray())
+          }).then(result => {
+            if (result.length > 0) {
+              res.end("login exist")
+            }
+            // else {
+            //   res.end("login free")
+            // }
+            return new Promise((resolve, reject) => {
+              resolve(bcrypt.hash(data.password, 12))
+            })
+          }).then(hashedPassword => {
+            const user = {
+              login: data.login,
+              password: hashedPassword
+            }
+            collection.insertOne()
+            return "ok"
+            console.log(hashedPassword)
+          }).then(log => {
+            res.end(hashedPassword)
+          })
+        })
+    }
   } else {
     let filePath = path.join(__dirname, '../dist')
     const ext = path.extname(req.url)
@@ -177,6 +222,23 @@ const server = http.createServer((req, res) => {
     })
   }
 })
+
+
 server.listen(PORT, () => {
   console.log(`Server has been started on ${PORT} port...`)
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//

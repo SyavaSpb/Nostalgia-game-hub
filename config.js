@@ -1,12 +1,14 @@
 const dev = {
   mode: "development",
   host: "localhost",
-  port: "3000"
+  port: "3000",
+  mongoip: "80.249.147.187"
 }
 const prod = {
   mode: "production",
   host: "80.249.147.187",
-  port: "80"
+  port: "80",
+  mongoip: "127.0.0.1"
 }
 
 const modeBuild = process.argv[2]

@@ -7,6 +7,7 @@
 .text-up { text-transform: uppercase; }
 .text-clean { text-decoration: none; }
 .text-orange { color: #f0a830; }
-.text-white { color: #ffffff; }
+.text-white { color: #fbeab7; }
+.text-red { color: #f03330; }
 .back-red { background-color: #f03330; }
 .back-orange { background-color: #f0a830; }

@@ -1,7 +1,44 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Header from '../components/header'
+import Auth from './Auth'
+const config = require('../../config.json')
 
-function App() {
+function useServerRequest(method, url, body = null) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open(method, url)
+    xhr.responseType = 'text'
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.onload = function() {
+      resolve(xhr.response)
+    }
+    xhr.send(JSON.stringify(body))
+  })
+}
+
+export default function App() {
+  const PORT = config.port
+  const HOST = config.host
+  const [authLog, setAuthLog] = useState('')
+  const [isActiveAuth, setActiveAuth] = useState(true)
+
+  function onReg(data) {
+    setActiveAuth(false)
+    useServerRequest('POST', "http://" + HOST + ":" + PORT + "/auth/reg", data)
+      .then(serverLog => {
+        setActiveAuth(true)
+        setAuthLog(serverLog)
+      })
+  }
+  function onLogin(data) {
+    setActiveAuth(false)
+    useServerRequest('POST', "http://" + HOST + ":" + PORT + "/auth/login", data)
+      .then(serverLog => {
+        setActiveAuth(true)
+        setAuthLog(serverLog)
+      })
+  }
+
   return (
     <div className="container">
 
@@ -10,12 +47,7 @@ function App() {
       <div className="separate">
 
         <aside className="authorization">
-          <div className="authorization__login box">
-            <span className="text-teletoon text-white"> Login </span>
-          </div>
-          <div className="authorization__registration box">
-            <span className="text-teletoon text-white"> Registration </span>
-          </div>
+          <Auth onReg={onReg} onLogin={onLogin} authLog={authLog} isActive={isActiveAuth}/>
         </aside>
 
 
@@ -36,5 +68,3 @@ function App() {
     </div>
   )
 }
-
-export default App;
