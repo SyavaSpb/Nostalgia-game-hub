@@ -12,10 +12,10 @@ module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: config.mode,
   entry: {
-    error: './error.js',
-    index: './index.js',
+    error: './error/error.js',
+    index: './index/index.js',
     game: './game.js',
-    sapper: './sapperconnect.js'
+    sapper: './sapper/sapperconnect.js'
   },
   output: {
     filename: "[name].[contenthash].js",
@@ -34,7 +34,7 @@ module.exports = {
   plugins: [
     new HTMLWebpackPlugin({
       chunks: ['index'],
-      template: './index.html',
+      template: './index/index.html',
       filename: 'index.html'
     }),
     new HTMLWebpackPlugin({
@@ -44,12 +44,12 @@ module.exports = {
     }),
     new HTMLWebpackPlugin({
       chunks: ['sapper'],
-      template: './sapper.html',
+      template: './sapper/sapper.html',
       filename: 'sapper.html'
     }),
     new HTMLWebpackPlugin({
       chunks: ['error'],
-      template: './error.html',
+      template: './error/error.html',
       filename: 'error.html'
     }),
     new CleanWebpackPlugin(),

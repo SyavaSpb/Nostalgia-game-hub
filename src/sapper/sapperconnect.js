@@ -1,8 +1,8 @@
-const config = require('../config.json')
+const config = require('../../config.json')
 const PORT = config.port
 const HOST = config.host
 
-import './css/pages/sapper.css'
+import '../css/pages/sapper.css'
 import { Sapper } from './sapper.js'
 
 let me = {}, room
