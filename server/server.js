@@ -6,6 +6,7 @@ const http = require('http')
 const fs = require('fs')
 const path = require('path')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const { Player, PlayerManager, Room, RoomManager } = require('./multiplayer/multiplayer')
 const roomManager = new RoomManager()
@@ -142,48 +143,78 @@ const server = http.createServer((req, res) => {
         })
     }
   } else if (requestUrl[0] == 'auth') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' })
     if (requestUrl[1] == 'login') {
       getBody(req)
         .then(data => {
-
+          const {login, password} = data
+          let userid
+          new Promise((resolve, reject) => {
+            resolve(collection.findOne({login: login}))
+          })
+          .then(user => {
+            if (user) {
+              userid = user._id
+              return bcrypt.compare(password, user.password)
+            } else {
+              res.end("user isn't found")
+              throw new Error()
+            }
+          }).then(isRightPassword => {
+            if (isRightPassword) {
+              const token = jwt.sign(
+                { userid: userid },
+                config.jwtSecret,
+                { expiresIn: "1h" }
+              )
+              res.end(JSON.stringify({ token: token, userid: userid }))
+            } else {
+              res.end("invalid password")
+              throw new Error()
+            }
+          })
+          .catch(() => {})
         })
     } else if (requestUrl[1] == 'reg') {
       getBody(req)
         .then(data => {
-          res.writeHead(200, { 'Content-Type': 'text/plain' })
           const {login, password} = data
-          if (login.length < 5) {
-            res.end("login must be more than 4 symbols")
-          } else if (login.length > 12) {
-            res.end("login must be less than 12 symbols")
-          } if (password.length < 5) {
-            res.end("password must be more than 5 symbols")
-          } else if (password.length > 12) {
-            res.end("password must be less than 12 symbols")
-          }
           new Promise((resolve, reject) => {
+            if (login.length < 5) {
+              res.end("login must be more than 4 symbols")
+              reject()
+            } else if (login.length > 12) {
+              res.end("login must be less than 12 symbols")
+              reject()
+            } if (password.length < 5) {
+              res.end("password must be more than 5 symbols")
+              reject()
+            } else if (password.length > 12) {
+              res.end("password must be less than 12 symbols")
+              reject()
+            }
             resolve(collection.find({login: login}).toArray())
-          }).then(result => {
+          })
+          .then(result => {
             if (result.length > 0) {
               res.end("login exist")
+              throw new Error()
             }
-            // else {
-            //   res.end("login free")
-            // }
-            return new Promise((resolve, reject) => {
-              resolve(bcrypt.hash(data.password, 12))
-            })
-          }).then(hashedPassword => {
+            return bcrypt.hash(password, 12)
+          })
+          .then(hashedPassword => {
             const user = {
-              login: data.login,
+              login: login,
               password: hashedPassword
             }
-            collection.insertOne()
-            return "ok"
-            console.log(hashedPassword)
-          }).then(log => {
-            res.end(hashedPassword)
+            collection.insertOne(user)
+            return "user was added"
           })
+          .then(log => {
+            res.end(log)
+          })
+          .catch(() => {})
+
         })
     }
   } else {
