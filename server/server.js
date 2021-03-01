@@ -66,7 +66,16 @@ const server = http.createServer((req, res) => {
   if (requestUrl[0] == 'gamerequest') {
     res.writeHead(200, { 'Content-Type': 'application/json' })
     if (requestUrl[1] == 'joinlobby') {
-
+      getBody(req)
+        .then(data => {
+          const player = new Player(data.player.name)
+          playerManager.addPlayer(player)
+          const result = {
+            player: player.forClient(),
+            log: "player is registered"
+          }
+          res.end(JSON.stringify(result))
+        })
     }
     else if (requestUrl[1] == 'getid') {
       getBody(req)

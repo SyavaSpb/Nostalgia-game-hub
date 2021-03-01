@@ -1,0 +1,6 @@
+"choose game mode"
+"connecting lobby"
+"join room"
+"connecting room"
+"customization room"
+"game"

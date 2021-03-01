@@ -13,6 +13,7 @@
 .text-s { font-size: 14px; }
 .text-center { text-align: center; }
 .text-bold { font-weight: bold; }
+.text-lighter { font-weight: lighter; }
 .text-up { text-transform: uppercase; }
 .text-clean { text-decoration: none; }
 .text-orange { color: #f0a830; }

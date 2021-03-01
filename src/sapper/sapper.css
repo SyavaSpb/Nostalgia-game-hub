@@ -4,18 +4,22 @@
 .information {
   width: 24%;
 }
+.information__players {
+  padding: 7px;
+}
+.information__ready {
+  padding: 7px;
+}
 
 /* main block */
 .mainBlock {
   width: 75%;
   height: 75vh;
 }
-
 .mainBlock__button {
   width: 50%;
   margin: 14px auto;
 }
-
 .mainBlock__menu {
   position: relative;
   padding: 5vh 0;
