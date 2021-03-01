@@ -148,13 +148,16 @@ const server = http.createServer((req, res) => {
       getBody(req)
         .then(data => {
           const {login, password} = data
-          let userid
+          let userData
           new Promise((resolve, reject) => {
             resolve(collection.findOne({login: login}))
           })
           .then(user => {
             if (user) {
-              userid = user._id
+              userData = {
+                userid: user._id,
+                login: user.login
+              }
               return bcrypt.compare(password, user.password)
             } else {
               res.end("user isn't found")
@@ -163,11 +166,11 @@ const server = http.createServer((req, res) => {
           }).then(isRightPassword => {
             if (isRightPassword) {
               const token = jwt.sign(
-                { userid: userid },
+                userData,
                 config.jwtSecret,
                 { expiresIn: "1h" }
               )
-              res.end(JSON.stringify({ token: token, userid: userid }))
+              res.end(JSON.stringify({ token: token, userData: userData }))
             } else {
               res.end("invalid password")
               throw new Error()

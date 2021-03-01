@@ -4,30 +4,30 @@ const storageName = 'userData'
 
 export function useAuth() {
   const [token, setToken] = useState(null)
-  const [userid, setUserid] = useState(null)
+  const [userData, setUserData] = useState({})
 
-  const login = useCallback((jwtToken, id) => {
+  const login = useCallback((jwtToken, data) => {
     setToken(jwtToken)
-    setUserid(id)
+    setUserData(data)
 
     localStorage.setItem(storageName, JSON.stringify({
-      userid: id,
+      userData: data,
       token: jwtToken
     }))
   }, [])
 
   const logout = useCallback(() => {
     setToken(null)
-    setUserid(null)
+    setUserData({})
     localStorage.removeItem(storageName)
   }, [])
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem(storageName))
     if (data && data.token) {
-      login(data.token, data.userid)
+      login(data.token, data.userData)
     }
   }, [login])
 
-  return { login, logout, userid, token }
+  return { login, logout, userData, token }
 }

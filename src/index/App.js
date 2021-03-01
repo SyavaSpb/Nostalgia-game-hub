@@ -21,7 +21,7 @@ function useServerRequest(method, url, body = null) {
 export default function App() {
   const PORT = config.port
   const HOST = config.host
-  const { login, logout, userid, token } = useAuth()
+  const { login, logout, userData, token } = useAuth()
   const isAuthenticated = token != null
   const [authLog, setAuthLog] = useState('')
   const [isActiveAuth, setActiveAuth] = useState(true)
@@ -41,13 +41,21 @@ export default function App() {
         setActiveAuth(true)
         setAuthLog(serverLog)
         const data = JSON.parse(serverLog)
-        login(data.token, data.userid)
+        console.log(data)
+        login(data.token, data.userData)
       })
+  }
+
+  const styles = {
+    record: {
+      display: 'flex',
+      justifyContent: 'space-between'
+    }
   }
 
   return (
     <AuthContext.Provider value={
-      token, login, logout, userid, isAuthenticated
+      token, login, logout, userData, isAuthenticated
     }>
       <div className="container">
 
@@ -57,7 +65,30 @@ export default function App() {
 
           <aside className="authorization">
             {isAuthenticated
-              ? <div className="box"> {userid} </div>
+              ? <div>
+                  <div className="box text-teletoon tittle-m text-white"
+                    style={{textAlign: 'center'}}
+                  >
+                    {userData.login}
+                  </div>
+                  <div className="box" style={{padding: '8px'}}>
+                    <div
+                      className="text-teletoon text-l text-white"
+                      style={{textAlign: 'center'}}
+                    >
+                      records
+                    </div>
+                    <div className="text-teletoon text-white text-m" style={styles.record}>
+                      <span>Snake</span> <span>0</span>
+                    </div>
+                    <div className="text-teletoon text-white text-m" style={styles.record}>
+                      <span>Tetris</span> <span>0</span>
+                    </div>
+                    <div className="text-teletoon text-white text-m" style={styles.record}>
+                      <span>Sapper</span> <span>0</span>
+                    </div>
+                  </div>
+                </div>
               : <Auth onReg={onReg} onLogin={onLogin} authLog={authLog} isActive={isActiveAuth}/>
             }
           </aside>

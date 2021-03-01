@@ -15,7 +15,7 @@ module.exports = {
     error: './error/error.js',
     index: './index/index.js',
     game: './game.js',
-    sapper: './sapper/sapperconnect.js'
+    sapper: './sapper/sapperMain.js'
   },
   output: {
     filename: "[name].[contenthash].js",
