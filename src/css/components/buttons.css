@@ -1,3 +1,14 @@
 .button-standart {
-  
+  padding: 0.5em 0;
+  /* border: 2px solid #000000; */
+  border-radius: 2em;
+  background-color: #f0a830;
+  cursor: pointer;
+}
+
+.button-deactivate {
+  padding: 0.5em 0;
+  /* border: 2px solid #000000; */
+  border-radius: 2em;
+  background-color: #f03330;
 }

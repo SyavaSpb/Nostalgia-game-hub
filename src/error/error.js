@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import '../css/pages/error.css'
+import './error.css'
 
 ReactDOM.render(
   <div className="container">

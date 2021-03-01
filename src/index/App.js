@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import Header from '../components/header'
 import Auth from './Auth'
 import {useAuth} from './useAuth'
-import {AuthContext} from './AuthContext'
+// import {AuthContext} from './AuthContext'
 const config = require('../../config.json')
 
 function useServerRequest(method, url, body = null) {
@@ -54,9 +54,9 @@ export default function App() {
   }
 
   return (
-    <AuthContext.Provider value={
-      token, login, logout, userData, isAuthenticated
-    }>
+    // <AuthContext.Provider value={
+    //   token, login, logout, userData, isAuthenticated
+    // }>
       <div className="container">
 
         <Header title={"Nostalgic games hub"} />
@@ -109,6 +109,6 @@ export default function App() {
         </div>
 
       </div>
-    </AuthContext.Provider>
+    // </AuthContext.Provider>
   )
 }

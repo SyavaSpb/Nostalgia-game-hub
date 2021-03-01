@@ -1,7 +1,4 @@
-@import url('../components/text.css');
-@import url('../fonts/fonts.css');
-@import url('../blocks/box.css');
-@import url('../blocks/container.css');
+@import url('../css/lib.css');
 
 * {
   margin: 0;

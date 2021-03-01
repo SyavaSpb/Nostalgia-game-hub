@@ -65,7 +65,10 @@ const server = http.createServer((req, res) => {
 
   if (requestUrl[0] == 'gamerequest') {
     res.writeHead(200, { 'Content-Type': 'application/json' })
-    if (requestUrl[1] == 'getid') {
+    if (requestUrl[1] == 'joinlobby') {
+
+    }
+    else if (requestUrl[1] == 'getid') {
       getBody(req)
         .then(data => {
           const player = new Player(data.player.name)
