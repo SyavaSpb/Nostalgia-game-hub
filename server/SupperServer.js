@@ -8,6 +8,7 @@ const SupperBoard = require('./SupperBoard.js')
 class SupperGame {
   constructor(w, h, amoungMine) {
     this.board = new SupperBoard(w, h, amoungMine)
+    console.log("SupperGame")
   }
 
   isEnd() {
@@ -21,14 +22,14 @@ class SupperGame {
     return this.board.open(i, j)
   }
 
-  forClinet() {
+  forClient() {
     return {
       grid: this.board.forClient()
     }
   }
 
-  startGame() {
-    this.board.startGame()
+  startGame(i = -1, j = -1) {
+    this.board.startGame(i, j)
   }
 
   log() {

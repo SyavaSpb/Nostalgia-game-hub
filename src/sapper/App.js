@@ -41,8 +41,14 @@ export default function App() {
   const { forceUpdate } = useForceUpdate()
 
 
-  const sleep = ms =>
-    new Promise(resolve => setTimeout(() => resolve(), ms))
+  function openSingleMode() {
+    setStatus("customization single game")
+  }
+
+  function startSingleGame() {
+    setStatus("single game")
+
+  }
 
   function joinLobby() {
     setStatus("connecting lobby")
@@ -135,6 +141,8 @@ export default function App() {
           joinRandomRoom={joinRandomRoom}
           room={room}
           sendMove={sendMove}
+          openSingleMode={openSingleMode}
+          startSingleGame={startSingleGame}
         />
       </div>
     </div>

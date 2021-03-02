@@ -66,7 +66,7 @@ module.exports = class Room {
       result.state = this.state
     }
     if (this.game) {
-      result.game = this.game.forClinet()
+      result.game = this.game.forClient()
     }
     return result
   }

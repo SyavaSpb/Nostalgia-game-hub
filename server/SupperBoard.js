@@ -139,8 +139,13 @@ module.exports = class SupperBoard extends Board {
     if (isExist(i, j, -1, 0)) grid[i + -1][j + 0].isOpen = true
     if (isExist(i, j, -1, -1)) grid[i + -1][j + -1].isOpen = true
   }
-  startGame() {
-    const randomPos = {x: ~~(Math.random() * this.kStr), y: ~~(Math.random() * this.kColumn)}
+  startGame(i, j) {
+    let randomPos
+    if (i == -1 && j == -1) {
+      randomPos = {x: ~~(Math.random() * this.kStr), y: ~~(Math.random() * this.kColumn)}
+    } else {
+      randomPos = {x: j, y: i}
+    }
     this.firstOpen(randomPos.x, randomPos.y)
     const grid = this.getGrid()
     const cellsForMines = this.randomWithFilter(cell => !cell.isOpen, this.amoungMine)
