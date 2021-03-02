@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import {useAuth} from '../index/useAuth'
 import Header from '../components/header'
 import MainBlock from './MainBlock'
@@ -37,17 +37,15 @@ export default function App() {
   const [status, setStatus] = useState("choose game mode")
   const [room, setRoom] = useState({})
   const [me, setMe] = useState({})
-  const [requester, setRequester] = useState()
+  const requester = useRef()
   const { forceUpdate } = useForceUpdate()
 
 
   const sleep = ms =>
     new Promise(resolve => setTimeout(() => resolve(), ms))
 
-  const joinLobby = () => {
+  function joinLobby() {
     setStatus("connecting lobby")
-    // sleep(2000)
-    //   .then(() => setStatus("join room"))
     const body = {player: {name: userData.login}}
     useServerRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/joinlobby", body)
       .then(data => {
@@ -56,27 +54,34 @@ export default function App() {
       })
   }
 
-  const joinRandomRoom = () => {
+  useEffect(() => {
+    if (status == "customization room") {
+      requester.current = setInterval(getRoominf, 200)
+    } else if (status == "game") {
+      clearInterval(requester.current)
+      requester.current = setInterval(getRoominf, 200)
+    }
+  }, [status])
+
+  function joinRandomRoom() {
     setStatus("connecting room")
-    // sleep(2000)
-    //   .then(() => setStatus("customization room"))
     const body = {player: me}
     useServerRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/joinroom", body)
       .then(data => {
         setMe(Object.assign(me, data.player))
         setStatus("customization room")
-        setRequester(setInterval(getRoominf, 200))
       })
   }
 
-  const getRoominf = () => {
+  function getRoominf() {
     const body = {player: me}
     useServerRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/getroominf", body)
       .then(data => {
         setRoom(Object.assign(room, data.room))
-        if (data.room.state == "game") {
+        if (data.room.state == "game" && status != "game") {
           setStatus("game")
-          clearInterval(requester)
+        } else if (data.room.state == "wait" && status == "game") {
+          setStatus("customization room")
         }
         forceUpdate()
       })
@@ -88,6 +93,26 @@ export default function App() {
       .then(data => {
         setMe(Object.assign(me, data.player))
         forceUpdate()
+      })
+  }
+
+  function getGameInf() {
+    const body = {player: me}
+    useServerRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/getgameinf", body)
+      .then(data => {
+        setRoom(Object.assign(room, data.room))
+        forceUpdate()
+      })
+  }
+
+  function sendMove(pos) {
+    const body = {
+      player: me,
+      move: pos
+    }
+    useServerRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/makemove", body)
+      .then(data => {
+        console.log(data.log)
       })
   }
 
@@ -108,6 +133,8 @@ export default function App() {
           status={status}
           joinLobby={joinLobby}
           joinRandomRoom={joinRandomRoom}
+          room={room}
+          sendMove={sendMove}
         />
       </div>
     </div>

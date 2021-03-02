@@ -52,15 +52,6 @@ export class Sapper {
         } else {
           if (cell.amoungMineAround > 0) {
             cell.image = images[cell.amoungMineAround]
-            // cell.image = new Image()
-            // if (cell.amoungMineAround == 1) cell.image.src = './' + mines_around_1.toString()
-            // if (cell.amoungMineAround == 2) cell.image.src = './' + mines_around_2.toString()
-            // if (cell.amoungMineAround == 3) cell.image.src = './' + mines_around_3.toString()
-            // if (cell.amoungMineAround == 4) cell.image.src = './' + mines_around_4.toString()
-            // if (cell.amoungMineAround == 5) cell.image.src = './' + mines_around_5.toString()
-            // if (cell.amoungMineAround == 6) cell.image.src = './' + mines_around_6.toString()
-            // if (cell.amoungMineAround == 7) cell.image.src = './' + mines_around_7.toString()
-            // if (cell.amoungMineAround == 8) cell.image.src = './' + mines_around_8.toString()
           }
           if (cell.isMine) {
             cell.image = images[9]

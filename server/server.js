@@ -64,20 +64,9 @@ const server = http.createServer((req, res) => {
   requestUrl.splice(0, 1)
 
   if (requestUrl[0] == 'gamerequest') {
+    
     res.writeHead(200, { 'Content-Type': 'application/json' })
     if (requestUrl[1] == 'joinlobby') {
-      getBody(req)
-        .then(data => {
-          const player = new Player(data.player.name)
-          playerManager.addPlayer(player)
-          const result = {
-            player: player.forClient(),
-            log: "player is registered"
-          }
-          res.end(JSON.stringify(result))
-        })
-    }
-    else if (requestUrl[1] == 'getid') {
       getBody(req)
         .then(data => {
           const player = new Player(data.player.name)
@@ -154,6 +143,7 @@ const server = http.createServer((req, res) => {
           res.end(JSON.stringify(result))
         })
     }
+
   } else if (requestUrl[0] == 'auth') {
     res.writeHead(200, { 'Content-Type': 'text/plain' })
     if (requestUrl[1] == 'login') {

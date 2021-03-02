@@ -37,6 +37,36 @@ export default function InformationBlock({ status, isAuthenticated, userData, to
       }
     </div>
   }
+  else if (status == "game") {
+    output =
+    <div>
+      <div className="box text-center">
+        <span className="text-teletoon tittle-m text-orange">
+          {userData.login}
+        </span>
+      </div>
+      {room.players
+        ? <div>
+            <div className="box information__players">
+              {room.players.map((player, index) => {
+                let classes = "text-teletoon text-lighter text-m text-white"
+                if (player.isMove) {
+                  classes += " back-orange"
+                } else if (player.isLoose) {
+                  classes += " back-red"
+                }
+                return <h1
+                       className = {classes}
+                       key={player.id}>
+                         {index + 1}. {player.name}
+                       </h1>
+                })}
+            </div>
+          </div>
+        : <div></div>
+      }
+    </div>
+  }
   else {
     if (isAuthenticated) {
       output =

@@ -1,6 +1,38 @@
-import React from 'react'
+import React, {useState, useRef, useEffect} from 'react'
+import СustomizationRoom from './СustomizationRoom'
+import {Sapper} from './sapper.js'
+import ReactDOMServer from 'react-dom/server';
 
-export default function MainBlock({ status, isAuthenticated, joinLobby, joinRandomRoom }) {
+export default function MainBlock({ status, isAuthenticated, joinLobby, joinRandomRoom, sendMove, room }) {
+  const [game, setGame] = useState(null)
+  const canvasRef = useRef(null)
+
+  useEffect(() => {
+    if (status == "game" && canvasRef.current) {
+      if (!game) {
+        console.log("unit")
+        setGame(new Sapper(canvasRef.current))
+      }
+      if (room.game.grid && game) {
+        game.setGrid(room.game.grid)
+        game.draw()
+      } else {
+        console.log("доска не найдена")
+      }
+    }
+    if (status != "game" && game) {
+      setGame(null)
+    }
+  })
+
+  function move() {
+    const x = event.pageX - event.target.getBoundingClientRect().left
+    const y = event.pageY - event.target.getBoundingClientRect().top
+    const cellSize = event.target.clientWidth / 8
+    const i = Math.floor(y / cellSize)
+    const j = Math.floor(x / cellSize)
+    sendMove({x: j, y: i})
+  }
 
   let output
   if (status == "choose game mode") {
@@ -44,14 +76,11 @@ export default function MainBlock({ status, isAuthenticated, joinLobby, joinRand
     </div>
   } else if (status == "customization room") {
     output =
-    <div className="mainBlock__menu box">
-      <span className="text-teletoon text-m text-white tittle-center">customization</span>
-    </div>
+    <СustomizationRoom />
   } else if (status == "game") {
-    
     output =
-    <div class="mainBlock__game board box">
-      <canvas id="game"></canvas>
+    <div className="mainBlock__game board box">
+      <canvas ref={canvasRef} id="game" onClick={(event) => move(event)}></canvas>
     </div>
   }
 
