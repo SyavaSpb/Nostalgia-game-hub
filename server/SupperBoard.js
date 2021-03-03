@@ -1,6 +1,3 @@
-// import {Board} from 'cell-games-front/Board.js'
-// import {GameObject} from 'cell-games-front/GameObject.js'
-
 const Board = require('cell-games-front/Board.js')
 const GameObject = require('cell-games-front/GameObject.js')
 
@@ -37,7 +34,7 @@ module.exports = class SupperBoard extends Board {
     super(w, h)
     this.amoungMine = amoungMine
     this.initBoard()
-    // this.initBoard()
+    this.isStart = false
   }
   initBoard() {
     for (let i = 0; i < this.kStr; i++) {
@@ -46,6 +43,12 @@ module.exports = class SupperBoard extends Board {
   }
 
   open(i, j) {
+    if (!this.isStart) {
+      this.startGame(i, j)
+      this.isStart = true
+      return "ok"
+    }
+
     const grid = this.getGrid()
     grid[i][j].isOpen = true
     if (grid[i][j].isMine) {
@@ -102,11 +105,11 @@ module.exports = class SupperBoard extends Board {
           visited[queue[ind - 1].x + -1][queue[ind - 1].y + -1] = true
         }
       }
-      return 'ok'
     } else {
       grid[i][j].isOpen = true
-      return 'ok'
     }
+
+    return "ok"
   }
 
   amoungClosedCells() {
@@ -140,13 +143,16 @@ module.exports = class SupperBoard extends Board {
     if (isExist(i, j, -1, -1)) grid[i + -1][j + -1].isOpen = true
   }
   startGame(i, j) {
+    this.isStart = true
     let randomPos
     if (i == -1 && j == -1) {
       randomPos = {x: ~~(Math.random() * this.kStr), y: ~~(Math.random() * this.kColumn)}
+      i = ~~(Math.random() * this.kStr)
+      j = ~~(Math.random() * this.kColumn)
     } else {
       randomPos = {x: j, y: i}
     }
-    this.firstOpen(randomPos.x, randomPos.y)
+    this.firstOpen(i, j)
     const grid = this.getGrid()
     const cellsForMines = this.randomWithFilter(cell => !cell.isOpen, this.amoungMine)
     cellsForMines.forEach(pos => {
@@ -174,8 +180,9 @@ module.exports = class SupperBoard extends Board {
         }
       })
     })
-    this.open(randomPos.x, randomPos.y)
+    this.open(i, j)
   }
+
   forClient() {
     const gridForCLient = new Array(this.kStr)
       .fill(null)

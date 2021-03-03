@@ -24,28 +24,7 @@ mongoClient.connect(function(err, client) {
     }
     db = client.db("nostalgic-games-hub-db");
     collection = db.collection("test");
-    // const user = { name: "Ivan1" }
-    // collection.insertOne(user)
-    // client.close();
 })
-
-{
-// const SupperGame = require('./SupperServer.js')
-// const cupperGame = new SupperGame(8, 10, 10)
-// cupperGame.startGame()
-// cupperGame.log()
-// console.log()
-// const gridForClient = cupperGame.forClinet().grid
-// gridForClient.forEach((str, i) => {
-//   let string = ""
-//   str.forEach((cell, j) => {
-//     if (!cell.isOpen) string += "C"
-//     else if (cell.isMine) string += "M"
-//     else string += cell.amoungMineAround.toString()
-//   })
-//   console.log(string)
-// })
-}
 
 
 function getBody(req) {
@@ -64,8 +43,8 @@ const server = http.createServer((req, res) => {
   requestUrl.splice(0, 1)
 
   if (requestUrl[0] == 'gamerequest') {
-    
     res.writeHead(200, { 'Content-Type': 'application/json' })
+
     if (requestUrl[1] == 'joinlobby') {
       getBody(req)
         .then(data => {
@@ -101,30 +80,10 @@ const server = http.createServer((req, res) => {
         .then(data => {
           const room = roomManager.getRoomById(data.player.roomid)
           const player = playerManager.getPlayerById(data.player.id)
-          let result = {}
-          if (room.state == "wait") {
-            player.changeReady()
-            result = {
-              player: player.forClient(),
-              log: "ready is changes"
-            }
-            if (room.checkReady()) {
-              room.initGame()
-            }
-          } else {
-            result = {
-              player: player.forClient(),
-              log: "failed change ready"
-            }
-          }
-          res.end(JSON.stringify(result))
-        })
-    } else if (requestUrl[1] == 'getgameinf') {
-      getBody(req)
-        .then(data => {
-          const room = roomManager.getRoomById(data.player.roomid)
-          const result = {
-            room: room.forClient()
+          const log = room.changeReady(player)
+          let result = {
+            player: player,
+            log: log
           }
           res.end(JSON.stringify(result))
         })
@@ -134,9 +93,6 @@ const server = http.createServer((req, res) => {
           const room = roomManager.getRoomById(data.player.roomid)
           const player = playerManager.getPlayerById(data.player.id)
           const log = room.move(data.move.y, data.move.x, player)
-          if (log == 'loose'){
-
-          }
           const result = {
             log: log
           }

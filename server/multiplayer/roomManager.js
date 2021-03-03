@@ -3,7 +3,6 @@ const Room = require('./room')
 module.exports = class RoomManager {
   constructor() {
     this.rooms = new Map()
-    // setInterval(this.log.bind(this), 2000)
   }
 
   getRoomById(id) {
@@ -29,10 +28,5 @@ module.exports = class RoomManager {
         return
       }
     }
-  }
-
-  log() {
-    console.log(this.rooms)
-    console.log(this.rooms.players)
   }
 }

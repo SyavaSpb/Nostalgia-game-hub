@@ -45,7 +45,6 @@ function useForm(inputs) {
 }
 
 export default function Auth({onReg, onLogin, authLog, isActive}) {
-  // const auth = useContext(AuthContext)
   const form = useForm({
     login: "",
     password: ""

@@ -8,7 +8,6 @@ const SupperBoard = require('./SupperBoard.js')
 class SupperGame {
   constructor(w, h, amoungMine) {
     this.board = new SupperBoard(w, h, amoungMine)
-    console.log("SupperGame")
   }
 
   isEnd() {

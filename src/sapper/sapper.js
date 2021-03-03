@@ -5,9 +5,9 @@ import {GameObject} from 'cell-games-front/GameObject.js'
 const {Graphic} = require('cell-games-front/Graphic.js')
 
 const images = new Array()
-import yellow_block from '../assets/yellow_block.png'
+import mine from '../assets/mine.png'
 images.push(new Image())
-images[0].src = './' + yellow_block.toString()
+images[0].src = './' + mine.toString()
 import mines_around_1 from '../assets/mines_around_1.png'
 images.push(new Image())
 images[1].src = './' + mines_around_1.toString()
@@ -32,29 +32,48 @@ images[7].src = './' + mines_around_7.toString()
 import mines_around_8 from '../assets/mines_around_8.png'
 images.push(new Image())
 images[8].src = './' + mines_around_8.toString()
-import mine from '../assets/mine.png'
+import yellow_block from '../assets/yellow_block.png'
 images.push(new Image())
-images[9].src = './' + mine.toString()
+images[9].src = './' + yellow_block.toString()
+import brawn_block from '../assets/brawn_block.png'
+images.push(new Image())
+images[10].src = './' + brawn_block.toString()
 
 
 export class Sapper {
-  constructor(canvas) {
-    this.graphic = new Graphic(canvas)
+  constructor(canvas, cellsPerLine) {
+    this.graphic = new Graphic(canvas, cellsPerLine)
+    this.flags = null
+  }
+  toggleFlag(i, j) {
+    this.flags[i][j] = !this.flags[i][j]
+    if (this.flags[i][j]) {
+      this.grid[i][j].image = images[10]
+    } else {
+      this.grid[i][j].image = images[9]
+    }
   }
   setGrid(grid) {
+    if (!this.flags) {
+      this.flags = new Array(grid.length)
+        .fill(null)
+        .map(() => new Array(grid[0].length).fill(false))
+    }
     this.grid = grid
     grid.forEach((str, i) => {
       str.forEach((cell, j) => {
         if (!cell.isOpen) {
-          // cell.image = new Image()
-          // cell.image.src = './' + yellow_block.toString()
-          cell.image = images[0]
+          if (!this.flags[i][j]) {
+            cell.image = images[9]
+          } else {
+            cell.image = images[10]
+          }
         } else {
           if (cell.amoungMineAround > 0) {
             cell.image = images[cell.amoungMineAround]
           }
           if (cell.isMine) {
-            cell.image = images[9]
+            cell.image = images[0]
           }
         }
       })

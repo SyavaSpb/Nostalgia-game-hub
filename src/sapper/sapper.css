@@ -28,6 +28,18 @@
   width: 100%;
   height: 106%;
 }
+.mainBlock__boardSizes {
+  display: flex;
+  justify-content: space-between;
+}
+.mainBlock__boardSize {
+  padding: 1em;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.mainBlock__boardSize-active {
+
+}
 
 
 

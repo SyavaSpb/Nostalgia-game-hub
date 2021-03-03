@@ -4,9 +4,8 @@ module.exports = class Player {
     this.setName(name)
     this.updateDate()
     this.ready = false
-    // this.isLoose = false
-    // this.isMove = false
-    // this.score = 0
+    this.isLoose = false
+    this.isMove = false
   }
 
   setName(name) {
@@ -28,16 +27,10 @@ module.exports = class Player {
     const result = {
       id: this.id,
       roomid: this.roomid,
-      name: this.name
-    }
-    if (this.ready) {
-      result.ready = this.ready
-    }
-    if (this.isLoose) {
-      result.isLoose = this.isLoose
-    }
-    if (this.isMove) {
-      result.isMove = this.isMove
+      name: this.name,
+      ready: this.ready,
+      isLoose: this.isLoose,
+      isMove: this.isMove
     }
     return result
   }
