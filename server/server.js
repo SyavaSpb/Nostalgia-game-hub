@@ -197,6 +197,9 @@ const server = http.createServer((req, res) => {
     } else if (req.url == '/sapper') {
       contentType = 'text/html'
       filePath = path.join(filePath, 'sapper.html')
+    } else if (req.url == '/tetris') {
+      contentType = 'text/html'
+      filePath = path.join(filePath, 'tetris.html')
     } else {
       filePath = path.join(filePath, req.url)
     }

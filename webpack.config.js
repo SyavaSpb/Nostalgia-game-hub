@@ -15,7 +15,8 @@ module.exports = {
     error: './error/error.js',
     index: './index/index.js',
     game: './game.js',
-    sapper: './sapper/sapperMain.js'
+    sapper: './sapper/sapperMain.js',
+    tetris: './tetris/tetris.js'
   },
   output: {
     filename: "[name].[contenthash].js",
@@ -51,6 +52,11 @@ module.exports = {
       chunks: ['error'],
       template: './error/error.html',
       filename: 'error.html'
+    }),
+    new HTMLWebpackPlugin({
+      chunks: ['tetris'],
+      template: './tetris/tetris.html',
+      filename: 'tetris.html'
     }),
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin({

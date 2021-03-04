@@ -5,3 +5,25 @@
   align-items: flex-start;
   margin-top: 8px;
 }
+
+.information {
+  width: 24%;
+}
+
+.mainBlock {
+  position: relative;
+  width: 75%;
+  height: 90vh;
+}
+.mainBlock__menu {
+  position: relative;
+  padding: 5vh 0;
+}
+.mainBlock__button {
+  width: 50%;
+  margin: 14px auto;
+}
+#game {
+  width: 100%;
+  height: 100%;
+}
