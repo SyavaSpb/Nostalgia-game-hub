@@ -133,7 +133,6 @@ export class Block extends GameObject {
         })
         return body
       })
-      // .reverse()
 
     this.body = this.bodies[this.indShape]
   }

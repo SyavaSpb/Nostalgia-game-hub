@@ -193,7 +193,7 @@ const server = http.createServer((req, res) => {
       filePath = path.join(filePath, 'index.html')
     } else if (req.url == '/snake') {
       contentType = 'text/html'
-      filePath = path.join(filePath, 'game.html')
+      filePath = path.join(filePath, 'snake.html')
     } else if (req.url == '/sapper') {
       contentType = 'text/html'
       filePath = path.join(filePath, 'sapper.html')

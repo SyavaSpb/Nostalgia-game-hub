@@ -1,15 +1,12 @@
 @import url('../css/lib.css');
 
-.authorization {
-  width: 24%;
+.container-index {
+  width: min(80vh, 99vw);
+  height: min(99vh, 124vw);
 }
 
-.games {
-  width: 75%;
-}
-
-.games__item {
+.game {
   position: relative;
-  height: 25vh;
+  height: 32%;
   margin-bottom: 8px;
 }

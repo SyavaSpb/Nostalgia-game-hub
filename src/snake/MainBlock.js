@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react'
-import TetrisGame from './TetrisEngine/TetrisGame.js'
+import SnakeGame from './SnakeEngine/SnakeGame.js'
 
 export default function MainBlock({ status, setStatus, setScore }) {
   const canvasRef = useRef(null)
@@ -12,7 +12,7 @@ export default function MainBlock({ status, setStatus, setScore }) {
 
   function startGame() {
     setStatus("play")
-    setGame(new TetrisGame(0, 0, canvasRef.current, goToMenu, setScore))
+    setGame(new SnakeGame(canvasRef.current))
   }
 
   useEffect(() => {

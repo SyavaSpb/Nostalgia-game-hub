@@ -46,7 +46,7 @@ export default class TetrisBoard extends Board {
         })
       })
     }
-    return "ok"
+    return lines
   }
 
   isPossibleSetBlock(block) {

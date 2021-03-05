@@ -1,10 +1,10 @@
 export default function useServerRequest() {
-  function serverRequest(method, url, body = null) {
+  function serverRequest(method, url, body = null, resHead = "json", reqHead = "application/json") {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest()
       xhr.open(method, url)
-      xhr.responseType = 'json'
-      xhr.setRequestHeader('Content-Type', 'application/json')
+      xhr.responseType = resHead
+      xhr.setRequestHeader('Content-Type', reqHead)
       xhr.onload = function() {
         resolve(xhr.response)
       }

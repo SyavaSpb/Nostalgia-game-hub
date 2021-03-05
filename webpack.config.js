@@ -14,9 +14,9 @@ module.exports = {
   entry: {
     error: './error/error.js',
     index: './index/index.js',
-    game: './game.js',
     sapper: './sapper/sapperMain.js',
-    tetris: './tetris/tetris.js'
+    tetris: './tetris/tetris.js',
+    snake: './snake/snake.js'
   },
   output: {
     filename: "[name].[contenthash].js",
@@ -39,24 +39,24 @@ module.exports = {
       filename: 'index.html'
     }),
     new HTMLWebpackPlugin({
-      chunks: ['game'],
-      template: './game.html',
-      filename: 'game.html'
-    }),
-    new HTMLWebpackPlugin({
       chunks: ['sapper'],
       template: './sapper/sapper.html',
       filename: 'sapper.html'
     }),
     new HTMLWebpackPlugin({
-      chunks: ['error'],
-      template: './error/error.html',
-      filename: 'error.html'
-    }),
-    new HTMLWebpackPlugin({
       chunks: ['tetris'],
       template: './tetris/tetris.html',
       filename: 'tetris.html'
+    }),
+    new HTMLWebpackPlugin({
+      chunks: ['snake'],
+      template: './snake/snake.html',
+      filename: 'snake.html'
+    }),
+    new HTMLWebpackPlugin({
+      chunks: ['error'],
+      template: './error/error.html',
+      filename: 'error.html'
     }),
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
