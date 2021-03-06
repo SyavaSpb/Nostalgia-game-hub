@@ -1,0 +1,9 @@
+.information__item {
+  margin: 10px 0;
+  padding: 7px;
+}
+
+.records__item {
+  display: flex;
+  justify-content: space-between;
+}

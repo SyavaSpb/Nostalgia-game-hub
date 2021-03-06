@@ -1,9 +1,21 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 
-export default function СustomizationRoom({ setValue,  partAmoung, minValue }) {
+export default function СustomizationRoom({ setValue, value, partAmoung, minValue }) {
   const [left, setLeft] = useState("0px")
   const [width, setWidth] = useState("0px")
   const [isDown, setIsDown] = useState(false)
+  const sliderRef = useRef(null)
+
+  useEffect(() => {
+    if (sliderRef.current) {
+      const partSize = (sliderRef.current.clientWidth - 40) / partAmoung
+      let x = (value - 1) * partSize
+      setLeft(x.toString() + "px")
+      x += 20
+      setWidth(x.toString() + "px")
+    }
+  }, [value, sliderRef])
+
   function toggleSlider(event) {
     if (isDown) {
       const slider = event.target
@@ -18,22 +30,19 @@ export default function СustomizationRoom({ setValue,  partAmoung, minValue }) 
         }
       }
       setValue(minValue + partIndex)
-      x = partIndex * partSize
-      setLeft(x.toString() + "px")
-      x += 20
-      setWidth(x.toString() + "px")
     }
   }
   return (
     <div
-      className="select back-red"
+      ref={sliderRef}
+      className="slider back-red"
       onMouseDown={() => setIsDown(true)}
       onMouseMove={() => toggleSlider(event)}
       onMouseOut={() => setIsDown(false)}
       onMouseUp={() => setIsDown(false)}
     >
-      <div className="sliderLeft back-orange" style={{width: width}}> </div>
-      <div className="slider back-orange" style={{left: left}}>
+      <div className="slider__filled back-orange" style={{width: width}}> </div>
+      <div className="slider__toddler back-orange" style={{left: left}}>
       </div>
     </div>
   )

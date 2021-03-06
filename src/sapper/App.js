@@ -6,7 +6,7 @@ import InformationBlock from './InformationBlock'
 
 import SupperGame from '../../server/SupperServer'
 
-import {useAuth} from '../hooks/useAuth'
+// import {useAuth} from '../hooks/useAuth'
 // import useServerRequest from '../hooks/useServerRequest'
 import useForceUpdate from '../hooks/useForceUpdate'
 import useGameRequests from './multiplayer/useGameRequests'
@@ -17,7 +17,7 @@ const config = require('../../config.json')
 export default function App() {
   const PORT = config.port
   const HOST = config.host
-  const { userData, token } = useAuth()
+  // const { userData, token } = useAuth()
   const isAuthenticated = token != null
   const [status, setStatus] = useState("choose game mode")
   const [room, setRoom] = useState({})

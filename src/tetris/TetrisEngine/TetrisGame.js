@@ -27,7 +27,7 @@ blockImages[4].src = './' + orange_block_src.toString()
 
 
 export default class TetrisGame {
-  constructor(jMax, iMax, canvas, _goToMemu, _setScore) {
+  constructor(jMax, iMax, canvas, level, _goToMemu, _setScore) {
     this.board = new TetrisBoard(10, 22)
     this.nextBlock = new Block({i: 1, j: 5},
         blockImages[Math.floor(Math.random() * blockImages.length)])
@@ -98,6 +98,6 @@ export default class TetrisGame {
   stop() {
     document.removeEventListener('keydown', this.move.bind(this))
     clearInterval(this.game)
-    this._goToMemu()
+    this._goToMemu(this.score)
   }
 }

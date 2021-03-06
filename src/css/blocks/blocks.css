@@ -1,4 +1,6 @@
 @import url('./box.css');
 /* @import url('./container.css'); */
 @import url('./separate.css');
-@import url('./modal.css')
+@import url('./modal.css');
+@import url('./menu');
+@import url('./information');

@@ -17,14 +17,17 @@ const mongoClient = new MongoClient(
   "mongodb://mongo-root:root@"+MONGOIP+":27017/?authSource=admin&readPreference=primary",
   { useUnifiedTopology: true }
 )
-let db, collection
+let db, users, records
 mongoClient.connect(function(err, client) {
     if (err) {
       throw err
     }
-    db = client.db("nostalgic-games-hub-db");
-    collection = db.collection("test");
+    db = client.db("nostalgic-games-hub-db")
+    users = db.collection("test")
+    records = db.collection("records")
 })
+
+const AuthRequests = require('./requests/AuthRequests')
 
 
 function getBody(req) {
@@ -44,7 +47,6 @@ const server = http.createServer((req, res) => {
 
   if (requestUrl[0] == 'gamerequest') {
     res.writeHead(200, { 'Content-Type': 'application/json' })
-
     if (requestUrl[1] == 'joinlobby') {
       getBody(req)
         .then(data => {
@@ -101,81 +103,26 @@ const server = http.createServer((req, res) => {
     }
 
   } else if (requestUrl[0] == 'auth') {
-    res.writeHead(200, { 'Content-Type': 'text/plain' })
+    res.writeHead(200, { 'Content-Type': 'application/json' })
     if (requestUrl[1] == 'login') {
-      getBody(req)
-        .then(data => {
-          const {login, password} = data
-          let userData
-          new Promise((resolve, reject) => {
-            resolve(collection.findOne({login: login}))
-          })
-          .then(user => {
-            if (user) {
-              userData = {
-                userid: user._id,
-                login: user.login
-              }
-              return bcrypt.compare(password, user.password)
-            } else {
-              res.end("user isn't found")
-              throw new Error()
-            }
-          }).then(isRightPassword => {
-            if (isRightPassword) {
-              const token = jwt.sign(
-                userData,
-                config.jwtSecret,
-                { expiresIn: "1h" }
-              )
-              res.end(JSON.stringify({ token: token, userData: userData }))
-            } else {
-              res.end("invalid password")
-              throw new Error()
-            }
-          })
-          .catch(() => {})
+      AuthRequests.login(req, users, bcrypt, jwt)
+        .then(result => {
+          res.end(JSON.stringify(result))
         })
     } else if (requestUrl[1] == 'reg') {
-      getBody(req)
+      AuthRequests.reg(req, users, records, bcrypt)
+        .then(result => {
+          res.end(JSON.stringify(result))
+        })
+    } else if (requestUrl[1] == 'records') {
+      AuthRequests.records(req, records)
+        .then(recordsData => {
+          res.end(JSON.stringify(recordsData))
+        })
+    } else if (requestUrl[1] == 'updaterecords') {
+      AuthRequests.updateRecords(req, records)
         .then(data => {
-          const {login, password} = data
-          new Promise((resolve, reject) => {
-            if (login.length < 5) {
-              res.end("login must be more than 4 symbols")
-              reject()
-            } else if (login.length > 12) {
-              res.end("login must be less than 12 symbols")
-              reject()
-            } if (password.length < 5) {
-              res.end("password must be more than 5 symbols")
-              reject()
-            } else if (password.length > 12) {
-              res.end("password must be less than 12 symbols")
-              reject()
-            }
-            resolve(collection.find({login: login}).toArray())
-          })
-          .then(result => {
-            if (result.length > 0) {
-              res.end("login exist")
-              throw new Error()
-            }
-            return bcrypt.hash(password, 12)
-          })
-          .then(hashedPassword => {
-            const user = {
-              login: login,
-              password: hashedPassword
-            }
-            collection.insertOne(user)
-            return "user was added"
-          })
-          .then(log => {
-            res.end(log)
-          })
-          .catch(() => {})
-
+          res.end(JSON.stringify(data))
         })
     }
   } else {

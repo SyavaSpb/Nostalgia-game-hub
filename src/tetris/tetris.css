@@ -1,5 +1,10 @@
 @import url('../css/lib.css');
 
+.container-tetris {
+  width: min(56vh, 99vw);
+  height: min(99vh, 173vw);
+}
+
 .nextContainer {
   width: 100%;
 }
@@ -8,22 +13,4 @@
   width: 12vh;
   height: 12vh;
   border: 1px solid red;
-}
-
-.modal {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0 , 0, 0, 0.5);
-}
-
-.modal__inner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 84%;
-  height: 75%;
-  transform: translate(-50%, -50%);
 }

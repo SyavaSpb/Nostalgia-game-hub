@@ -1,0 +1,9 @@
+.input-standart {
+  width: 100%;
+  padding: 0.2em;
+  border-radius: 1em;
+  border: none;
+}
+.input-standart:focus {
+  outline: none;
+}

@@ -1,3 +1,10 @@
+button {
+  border: none;
+}
+button:focus {
+  outline: none;
+}
+
 .button-standart {
   padding: 0.5em 0;
   /* border: 2px solid #000000; */

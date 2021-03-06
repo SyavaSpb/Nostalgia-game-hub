@@ -1,0 +1,14 @@
+.auth {
+  padding: 0 7px;
+}
+.auth__item {
+  margin: 10px 0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.buttons__item {
+  width: 48%;
+}

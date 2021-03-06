@@ -26,7 +26,7 @@ blockImages.push(new Image())
 blockImages[4].src = './' + orange_block_src.toString()
 
 export default class Snake {
-  constructor(canvas) {
+  constructor(canvas, level, _goToMenu, _setScore) {
     this.board = new Board(16, 24)
 
     this.map = this.initMap()
@@ -40,6 +40,11 @@ export default class Snake {
     this.graphic = new Graphic(canvas, 16)
 
     this.score = 0
+    this.level = level
+    this.freq = (8 - level) * 50
+
+    this._goToMenu = _goToMenu
+    this._setScore = _setScore
 
     this.draw()
   }
@@ -69,6 +74,7 @@ export default class Snake {
     }
     if (testSnake.isTouchGameObject(this.food)) {
       this.setFood()
+      this.addScore()
       this.snakeBody.pushCellInEnd()
     } else if (testSnake.isTouchGameObject(this.map)) {
       this.stop()
@@ -86,16 +92,18 @@ export default class Snake {
   }
 
   play() {
-    this.game = setInterval(this.step.bind(this), 200)
+    this.game = setInterval(this.step.bind(this), this.freq)
     document.addEventListener('keydown', this.move.bind(this))
   }
   stop() {
     document.removeEventListener('keydown', this.move.bind(this))
     clearInterval(this.game)
+    this._goToMenu(this.score)
   }
 
-  addScore(value) {
-    this.score += value
+  addScore() {
+    this.score += this.level
+    this._setScore(this.score)
   }
 
   initBoard() {
@@ -103,7 +111,7 @@ export default class Snake {
     const board = new Board(kStr, kColumn)
     return board
   }
-  
+
   initMap() {
     const map = new GameObject({i: 0, j: 0})
     for (let i = 0; i < 24; i++) {

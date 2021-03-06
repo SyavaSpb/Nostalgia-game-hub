@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import Slider from './Slider'
+import Slider from './../components/Slider'
 import './СustomizationRoom.css'
 
 export default function СustomizationRoom() {
