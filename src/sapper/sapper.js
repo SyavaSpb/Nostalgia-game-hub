@@ -41,10 +41,39 @@ images[10].src = './' + brawn_block.toString()
 
 
 export class Sapper {
-  constructor(canvas, cellsPerLine) {
+  constructor(canvas, cellsPerLine, _serverMove) {
     this.graphic = new Graphic(canvas, cellsPerLine)
     this.flags = null
+    this._serverMove = _serverMove
+    this.cellsPerLine = cellsPerLine
+
+    canvas.addEventListener("mousedown", this.move.bind(this))
+    canvas.addEventListener("contextmenu", (event) => event.preventDefault())
   }
+
+  move(event) {
+    // event.preventDefault()
+    const x = event.pageX - event.target.getBoundingClientRect().left
+    const y = event.pageY - event.target.getBoundingClientRect().top
+    const cellSize = event.target.clientWidth / this.cellsPerLine
+    const i = Math.floor(y / cellSize)
+    const j = Math.floor(x / cellSize)
+
+    let rightBrn
+    if (event.wich) {
+      rightBrn = event.which == 3
+    } else if (event.button) {
+      rightBrn = event.button == 2
+    }
+
+    if (rightBrn) {
+      this.toggleFlag(i, j)
+      this.draw()
+    } else {
+      this._serverMove({i: i, j: j})
+    }
+  }
+
   toggleFlag(i, j) {
     this.flags[i][j] = !this.flags[i][j]
     if (this.flags[i][j]) {
@@ -53,6 +82,7 @@ export class Sapper {
       this.grid[i][j].image = images[9]
     }
   }
+
   setGrid(grid) {
     if (!this.flags) {
       this.flags = new Array(grid.length)
@@ -79,6 +109,7 @@ export class Sapper {
       })
     })
   }
+
   draw() {
     this.graphic.drawGrid(this.grid)
   }

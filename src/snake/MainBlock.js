@@ -9,7 +9,6 @@ export default function MainBlock({ status, setStatus, setScore, levelState }) {
   const isAuthenticated = token != null
   const canvasRef = useRef(null)
   const [game, setGame] = useState(null)
-  const [lastScore, setLastScore] = useState(null)
   const {level, setLevel} = levelState
   const {updateRecords} = useRecords()
 

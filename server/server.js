@@ -94,7 +94,7 @@ const server = http.createServer((req, res) => {
         .then(data => {
           const room = roomManager.getRoomById(data.player.roomid)
           const player = playerManager.getPlayerById(data.player.id)
-          const log = room.move(data.move.y, data.move.x, player)
+          const log = room.move(data.move.i, data.move.j, player)
           const result = {
             log: log
           }

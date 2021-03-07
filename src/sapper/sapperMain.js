@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from './App.js'
+import App_sapper from './App_sapper.js'
 import './sapper.css'
 
-ReactDOM.render(<App />, document.getElementById("root"))
+ReactDOM.render(<App_sapper />, document.getElementById("root"))

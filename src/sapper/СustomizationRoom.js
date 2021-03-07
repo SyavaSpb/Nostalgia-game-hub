@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import Slider from './../components/Slider'
-import './СustomizationRoom.css'
 
 export default function СustomizationRoom() {
   const [maxPlayers, setMaxPlayers] = useState(6)

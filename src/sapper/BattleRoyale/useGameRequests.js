@@ -1,46 +1,49 @@
 import useServerRequest from '../../hooks/useServerRequest'
 import useForceUpdate from '../../hooks/useForceUpdate'
 
-export default function useGameRequests(HOST, PORT, setStatus, setMe, setRoom, name) {
+export default function useGameRequests(HOST, PORT, setMe, setRoom) {
   const { serverRequest } = useServerRequest()
   const { forceUpdate } = useForceUpdate()
 
-  function joinLobby(me, name) {
-    setStatus("connecting lobby")
+  function joinLobby(name) {
+    // setStatus("connecting lobby")
     const body = {player: {name: name}}
     serverRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/joinlobby", body)
       .then(data => {
-        setMe(Object.assign(me, data.player))
-        setStatus("join room")
+        console.log("jl", data)
+        setMe(data.player)
+        // setStatus("join room")
       })
   }
 
   function joinRandomRoom(me) {
-    setStatus("connecting room")
+    // setStatus("connecting room")
     const body = {player: me}
     serverRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/joinroom", body)
       .then(data => {
-        setMe(Object.assign(me, data.player))
-        setStatus("customization room")
+        console.log("jrr", data)
+        setMe(data.player)
+        // setStatus("customization room")
       })
   }
 
-  function getRoominf(me, room, status, setGrid) {
+  function getRoominf(me) {
     const body = {player: me}
     serverRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/getroominf", body)
       .then(data => {
-        setRoom(Object.assign(room, data.room))
-        if (data.room.state == "game") {
-          setGrid(data.room.game.grid)
-        }
-        if (data.room.state == "game" && status != "game") {
-          setStatus("game")
-        } else if (data.room.state == "wait" && status == "game") {
-          setStatus("customization room")
-          setGrid(null)
-          // setRoom(Object.assign(room, {game: null}))
-        }
-        forceUpdate()
+        // console.log("gri", data)
+        setRoom(data.room)
+        // if (data.room.state == "game") {
+        //   setGrid(data.room.game.grid)
+        // }
+        // if (data.room.state == "game" && status != "game") {
+        //   setStatus("game")
+        // } else if (data.room.state == "wait" && status == "game") {
+        //   setStatus("customization room")
+        //   setGrid(null)
+        //   // setRoom(Object.assign(room, {game: null}))
+        // }
+        // forceUpdate()
       })
   }
 
@@ -48,8 +51,8 @@ export default function useGameRequests(HOST, PORT, setStatus, setMe, setRoom, n
     const body = {player: me}
     serverRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/ready", body)
       .then(data => {
-        setMe(Object.assign(me, data.player))
-        forceUpdate()
+        console.log("tr", data)
+        setMe(data.player)
       })
   }
 
@@ -58,9 +61,10 @@ export default function useGameRequests(HOST, PORT, setStatus, setMe, setRoom, n
       player: me,
       move: pos
     }
+    console.log(body)
     serverRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/makemove", body)
       .then(data => {
-        console.log(data.log)
+        console.log("sm", data.log)
       })
   }
 

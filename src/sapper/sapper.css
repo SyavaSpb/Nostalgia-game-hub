@@ -1,22 +1,27 @@
 @import url('../css/lib.css');
 
-/* information */
-.information {
-  width: 24%;
+.container-sapper {
+  width: min(82vh, 99vw);
+  height: min(99vh, 120vw);
 }
-.information__players {
+
+/* information */
+/* .information {
+  width: 24%;
+} */
+/* .information__players {
   padding: 7px;
 }
 .information__ready {
   padding: 7px;
-}
+} */
 
 /* main block */
-.mainBlock {
+/* .mainBlock {
   width: 75%;
   height: 75vh;
-}
-.mainBlock__button {
+} */
+/* .mainBlock__button {
   width: 50%;
   margin: 14px auto;
 }
@@ -39,7 +44,7 @@
 }
 .mainBlock__boardSize-active {
 
-}
+} */
 
 
 
