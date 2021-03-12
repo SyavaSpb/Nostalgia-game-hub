@@ -1,8 +1,20 @@
 import React, {useState, useRef, useEffect} from 'react'
-import TetrisGame from './TetrisEngine/TetrisGame.js'
-import Slider from './../components/Slider'
+
 import { useAuthContext } from './../components/Auth/AuthContext'
 import useRecords from './../hooks/useRecords'
+
+import TetrisGame from './TetrisEngine/TetrisGame.js'
+import Slider from './../components/Slider'
+
+import config from './../../config.json'
+const MODE = config.mode
+const PORT = config.port
+const HOST = config.host
+let hrefMenu = "http://" + HOST
+if (MODE == "development") {
+  hrefMenu += ":"
+  hrefMenu += PORT
+}
 
 export default function MainBlock({ status, setStatus, setScore, levelState }) {
   const { userData, token } = useAuthContext()
@@ -57,7 +69,7 @@ export default function MainBlock({ status, setStatus, setScore, levelState }) {
         <div className="button-standart text-center menu__item" onClick={() => startGame()}>
           <span className="text-teletoon text-l text-white"> play </span>
         </div>
-        <a className="text-clean" href="http://localhost:3000">
+        <a className="text-clean" href={hrefMenu}>
           <div className="button-standart text-center menu__item">
             <span className="text-teletoon text-l text-white"> go to menu </span>
           </div>
