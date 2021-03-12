@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "node config dev && webpack && node server/server",
-    "start": "node config prod && webpack && pm2 start server/server.js"
+    "startpm2": "node config prod && webpack && pm2 start server/server.js",
+    "start": "node config prod && webpack && node server/server"
   },
   "repository": {
     "type": "git",
