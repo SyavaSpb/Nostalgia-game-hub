@@ -41,8 +41,12 @@ export default function Information__BattleRoyale() {
             if (player.isLoose) {
               classes += " back-red"
             }
+            let active
+            if (!player.isActive) {
+              active = "dis"
+            }
             return <h1 className={classes} key={player.id}>
-                    {index + 1}. {player.name}
+                    {index + 1}. {player.name} {player.moveTime} {active}
                    </h1>
           })}
         </div>

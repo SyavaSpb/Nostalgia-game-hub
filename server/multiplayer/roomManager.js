@@ -3,6 +3,15 @@ const Room = require('./room')
 module.exports = class RoomManager {
   constructor() {
     this.rooms = new Map()
+    setInterval(this.log.bind(this), 1000)
+  }
+
+  checkRoom() {
+
+  }
+
+  removeRoom(roomid) {
+    this.rooms.delete(roomid)
   }
 
   getRoomById(id) {
@@ -15,7 +24,7 @@ module.exports = class RoomManager {
         return this.rooms.get(id)
       }
     }
-    const room = new Room()
+    const room = new Room(this.removeRoom.bind(this))
     this.addRoom(room)
     return room
   }
@@ -28,5 +37,9 @@ module.exports = class RoomManager {
         return
       }
     }
+  }
+
+  log() {
+    console.log("Amoung of rooms: ", this.rooms.size)
   }
 }

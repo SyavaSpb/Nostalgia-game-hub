@@ -1,23 +1,18 @@
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const config = require('./../../config.json')
-
-async function getBody(req) {
-  let body = '';
-  req.on('data', chunk => body += chunk.toString())
-  data = await new Promise(r => req.on('end', () => r(JSON.parse(body))))
-  return data
-}
+const JWTSECRET = config.jwtSecret
 
 module.exports = class AuthRequests {
   constructor() {
 
   }
-  static async login(req, users, bcrypt, jwt) {
+  static async login(data, usersdb) {
     try {
       const result = {}
-      data = await getBody(req)
       const {login, password} = data
       let userData, isRightPassword
-      const user = await users.findOne({login: login})
+      const user = await usersdb.findOne({login: login})
       if (user) {
         userData = {
           userid: user._id,
@@ -29,19 +24,19 @@ module.exports = class AuthRequests {
         result.status = 1
         return result
       }
-      if (isRightPassword) {
+      if (!isRightPassword) {
+        result.status = 2
+        result.log = "invalid password"
+        return result
+      } else {
         const token = jwt.sign(
           userData,
-          config.jwtSecret,
+          JWTSECRET,
           { expiresIn: "1h" }
         )
         result.status = 3
         result.userData = userData
         result.token = token
-        return result
-      } else {
-        result.status = 2
-        result.log = "invalid password"
         return result
       }
     } catch (e) {
@@ -79,10 +74,9 @@ module.exports = class AuthRequests {
       return result
     }
   }
-  static async reg(req, users, records, bcrypt) {
+  static async reg(data, usersdb, recordsdb) {
     try {
       const result = {}
-      data = await getBody(req)
       const {login, password} = data
 
       const isRightLogin = this.validLogin(login)
@@ -96,7 +90,7 @@ module.exports = class AuthRequests {
         return result
       }
 
-      const condidate = await users.findOne({login: login})
+      const condidate = await usersdb.findOne({login: login})
       if (condidate) {
         result.log = "login exist"
         return result
@@ -107,7 +101,7 @@ module.exports = class AuthRequests {
         login: login,
         password: hashedPassword
       }
-      await users.insertOne(user)
+      await usersdb.insertOne(user)
       const newRecords = {
         login: login,
         snake: 0,
@@ -116,7 +110,7 @@ module.exports = class AuthRequests {
           "8*10*10": 0
         }
       }
-      await records.insertOne(newRecords)
+      await recordsdb.insertOne(newRecords)
       result.log = "user was reg"
       return result
     } catch (e) {
@@ -125,9 +119,8 @@ module.exports = class AuthRequests {
     }
   }
 
-  static async records(req, recordsdb) {
+  static async records(data, recordsdb) {
     try {
-      const data = await getBody(req)
       const player = data.player
       const recordsData = await recordsdb.findOne({login: player.login})
       return recordsData
@@ -137,9 +130,8 @@ module.exports = class AuthRequests {
     }
   }
 
-  static async updateRecords(req, recordsdb) {
+  static async updateRecords(data, recordsdb) {
     try {
-      const data = await getBody(req)
       const recordsOld = data.records
       const player = data.player
       const recordsData = await recordsdb.findOne({login: player.login})

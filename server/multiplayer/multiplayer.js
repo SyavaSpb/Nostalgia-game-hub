@@ -1,11 +1,11 @@
-const Player = require('./player.js')
+const Player = require('./Player.js')
 module.exports.Player = Player
 
-const Room = require('./room.js')
+const Room = require('./Room.js')
 module.exports.Room = Room
 
-const RoomManager = require('./roomManager.js')
+const RoomManager = require('./RoomManager.js')
 module.exports.RoomManager = RoomManager
 
-const PlayerManager = require('./playerManager.js')
+const PlayerManager = require('./PlayerManager.js')
 module.exports.PlayerManager = PlayerManager

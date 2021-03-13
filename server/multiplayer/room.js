@@ -1,8 +1,10 @@
 const SupperGame = require('./../SupperServer.js')
+const PlayerManagerInRoom = require('./PlayerManagerInRoom.js')
 
 module.exports = class Room {
-  constructor() {
+  constructor(_removeRoom) {
     this.players = new Array()
+    this.watchers = new Array()
     this.state = "wait"
     this.property = {
       sapperProperty: {
@@ -11,43 +13,12 @@ module.exports = class Room {
         mines: 10
       }
     }
-  }
-
-  setRoomProperty(property) {
-    this.property = Object.assign(this.property, property)
+    this._removeRoom = _removeRoom
+    this.playerManager = new PlayerManagerInRoom(players, watchers, state)
   }
 
   setid(roomid) {
     this.id = roomid
-  }
-
-  updateDate() {
-    this.date = Date.now()
-  }
-
-  addPlayer(player) {
-    player.setRoom(this.id)
-    this.players.push(player)
-  }
-
-  changeReady(player) {
-    if (this.state == "wait") {
-      player.changeReady()
-      if (this.checkReady()) {
-        this.initGame()
-      }
-      return "ready is changed"
-    } else {
-      return "fail"
-    }
-  }
-
-  checkReady() {
-    return this.players.reduce((acc, curr) => curr.ready && acc, true)
-  }
-
-  mixPlayers() {
-
   }
 
   initGame() {
@@ -56,13 +27,27 @@ module.exports = class Room {
       player.isLoose = false
       player.isMove = false
     })
-    this.startGame()
+    // this.startGame()
   }
 
   startGame() {
     this.state = "game"
     this.players[0].isMove = true
+    this.players[0].timeEndMove = Date.now() + 1000 * 30
+    if (this.chekingLobby) {
+      clearInterval(this.checkPlayersInLobby)
+    }
+    this.checkingGame = setInterval(this.checkGame.bind(this), 500)
     this.game.startGame()
+  }
+
+  checkGame() {
+    const playerMove = this.players.filter(player => player.isMove)[0]
+    if (playerMove.timeEndMove - Date.now() < 500) {
+      playerMove.isLoose = true
+      playerMove.isMove = false
+      this.nextPlayer(this.players.indexOf(playerMove))
+    }
   }
 
   move(i, j, player) {
@@ -87,29 +72,23 @@ module.exports = class Room {
     return log
   }
 
-  nextPlayer(ind) {
-    for (let i = ind + 1; i < this.players.length; i++) {
-      if (!this.players[i].isLoose) {
-        this.players[i].isMove = true
-        return
-      }
-    }
-    for (let i = 0; i <= ind; i++) {
-      if (!this.players[i].isLoose) {
-        this.players[i].isMove = true
-        return
-      }
-    }
-    this.endGame()
-    return
-  }
-
   endGame() {
     this.game = null
+    this.players = this.players.filter(player => {
+      return Date.now() - player.date < 1000 * 30
+    })
+    this.watchers.forEach(watchcer => {
+      this.players.push(watchcer)
+    })
+    this.wathcers = new Array()
     this.players.forEach(player => {
       player.ready = false
     })
     this.state = "wait"
+    if (this.checkTimeMoves) {
+      clearInterval(this.checkTimeMoves)
+    }
+    this.chekingLobby = setInterval(this.checkPlayersInLobby.bind(this), 500)
     console.log("end")
   }
 
