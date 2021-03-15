@@ -8,21 +8,37 @@ module.exports = class Room {
     this.state = "wait"
     this.property = {
       sapperProperty: {
-        w: 8,
-        h: 10,
-        mines: 10
+        w: 14,
+        h: 18,
+        mines: 40
       }
     }
     this._removeRoom = _removeRoom
-    this.playerManager = new PlayerManagerInRoom(players, watchers, state)
+    this.playerManager = new PlayerManagerInRoom(
+      this.players, this.watchers, this.state
+    )
   }
 
   setid(roomid) {
     this.id = roomid
   }
 
+  addPlayer(player) {
+    this.playerManager.addPlayer(player)
+    player.setRoom(this.id)
+  }
+
+  changeReady(player) {
+    const log = this.playerManager.changeReady(player)
+    if (this.playerManager.checkReady()) {
+      this.initGame()
+      this.startGame()
+    }
+    return log
+  }
+
   initGame() {
-    this.game = new SupperGame(8, 10, 10)
+    this.game = new SupperGame(14, 18, 50)
     this.players.forEach(player => {
       player.isLoose = false
       player.isMove = false
@@ -46,7 +62,10 @@ module.exports = class Room {
     if (playerMove.timeEndMove - Date.now() < 500) {
       playerMove.isLoose = true
       playerMove.isMove = false
-      this.nextPlayer(this.players.indexOf(playerMove))
+      const log = this.playerManager.nextPlayer(this.players.indexOf(playerMove))
+      if (log == "end") {
+        this.endGame()
+      }
     }
   }
 
@@ -61,11 +80,10 @@ module.exports = class Room {
         player.isLoose = true
         log = 'loose'
       }
-      // } else if (res == 'end') {
-      //   this.endGame()
-      // } else {
-        this.nextPlayer(this.players.indexOf(player))
-      // }
+      const logNext = this.playerManager.nextPlayer(this.players.indexOf(player))
+      if (logNext == "end") {
+        this.endGame()
+      }
     } else {
       log = 'it isn\'t your move'
     }
@@ -73,9 +91,15 @@ module.exports = class Room {
   }
 
   endGame() {
+    clearInterval(this.checkingGame)
     this.game = null
     this.players = this.players.filter(player => {
-      return Date.now() - player.date < 1000 * 30
+      if (Date.now() - player.date < 1000 * 30) {
+        return true
+      } else {
+        player.setRoom(-1)
+        return false
+      }
     })
     this.watchers.forEach(watchcer => {
       this.players.push(watchcer)
@@ -88,7 +112,6 @@ module.exports = class Room {
     if (this.checkTimeMoves) {
       clearInterval(this.checkTimeMoves)
     }
-    this.chekingLobby = setInterval(this.checkPlayersInLobby.bind(this), 500)
     console.log("end")
   }
 

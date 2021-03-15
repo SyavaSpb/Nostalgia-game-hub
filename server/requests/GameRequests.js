@@ -2,8 +2,7 @@ const { Player } = require('./../multiplayer/multiplayer')
 
 module.exports = class GameRequests {
   static async joinlobby(data, playerManager) {
-    const player = new Player(data.player.name)
-    playerManager.addPlayer(player)
+    const player = playerManager.addPlayer(new Player(data.player.name))
     const result = {
       player: player.forClient(),
       log: "player is registered"

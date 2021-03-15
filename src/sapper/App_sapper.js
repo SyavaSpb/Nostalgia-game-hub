@@ -14,16 +14,22 @@ export default function App() {
   return (
     <div className="container container-sapper">
       <Header title={"sapper"}/>
+
       <AuthProvider>
         <StatusProvider>
           <BattleRoyaleProvider>
+
             <div className="separate">
+
               <Information_sapper/>
               <MainBlock_sapper/>
+              
             </div>
+
           </BattleRoyaleProvider>
         </StatusProvider>
       </AuthProvider>
+
     </div>
   )
 }

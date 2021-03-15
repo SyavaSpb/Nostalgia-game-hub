@@ -37,7 +37,7 @@ export default function MainBlock({ status, setStatus, setScore, levelState }) {
 
   function startGame() {
     setStatus("play")
-    setGame(new TetrisGame(0, 0, canvasRef.current, level, goToMenu, setScore))
+    setGame(new TetrisGame(0, 0, canvasRef.current, level, goToMenu, setScore, setLevel))
   }
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function MainBlock({ status, setStatus, setScore, levelState }) {
           <Slider
             setValue={setLevel}
             value={level}
-            partAmoung={6}
+            partAmoung={15}
             minValue={1}
           />
         </div>
@@ -71,7 +71,7 @@ export default function MainBlock({ status, setStatus, setScore, levelState }) {
         </div>
         <a className="text-clean" href={hrefMenu}>
           <div className="button-standart text-center menu__item">
-            <span className="text-teletoon text-l text-white"> go to menu </span>
+            <span className="text-teletoon text-l text-white"> menu </span>
           </div>
         </a>
       </div>

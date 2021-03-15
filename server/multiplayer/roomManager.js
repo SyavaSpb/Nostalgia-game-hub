@@ -3,7 +3,8 @@ const Room = require('./room')
 module.exports = class RoomManager {
   constructor() {
     this.rooms = new Map()
-    setInterval(this.log.bind(this), 1000)
+
+    // setInterval(this.log.bind(this), 1000)
   }
 
   checkRoom() {

@@ -4,17 +4,30 @@ module.exports = class PlayerManager {
     this.delayDelete = 1000 * 60
     this.delayClean = 1000 * 60 * 5
 
-    // setInterval(() => this.log, 3000)
+    setInterval(this.log.bind(this), 3000)
   }
 
-  addPlayer(player) {
+  newPlayer(player) {
     for (let id = 1000; id < 9999; id++) {
       if (!this.players.has(id)) {
         player.id = id
         this.players.set(id, player)
-        return
+        return player
       }
     }
+  }
+
+  addPlayer(player) {
+    let resultPlayer = null
+    this.players.forEach(playerItem => {
+      if (playerItem.name == player.name) {
+        resultPlayer = playerItem
+      }
+    })
+    if (!resultPlayer) {
+      resultPlayer = this.newPlayer(player)
+    }
+    return resultPlayer
   }
 
   getPlayerById(id) {

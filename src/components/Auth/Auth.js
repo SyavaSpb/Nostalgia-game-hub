@@ -8,7 +8,7 @@ import config from '../../../config.json'
 const PORT = config.port
 const HOST = config.host
 
-export default function Auth() {
+export default function Auth({ isLogout }) {
   const { login, logout, userData, token } = useAuthContext()
   const isAuthenticated = token != null
   const {onReg, onLogin, onLogout} = useAuthRequests(login, logout)
@@ -19,6 +19,7 @@ export default function Auth() {
       <Auth__player
         userData={userData}
         onLogout={onLogout}
+        isLogout={isLogout}
       />
     )
   } else {

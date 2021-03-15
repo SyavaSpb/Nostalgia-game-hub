@@ -27,7 +27,7 @@ blockImages[4].src = './' + orange_block_src.toString()
 
 
 export default class TetrisGame {
-  constructor(jMax, iMax, canvas, level, _goToMemu, _setScore) {
+  constructor(jMax, iMax, canvas, level, _goToMemu, _setScore, _setLevel) {
     this.board = new TetrisBoard(10, 22)
     this.nextBlock = new Block({i: 1, j: 5},
         blockImages[Math.floor(Math.random() * blockImages.length)])
@@ -36,9 +36,14 @@ export default class TetrisGame {
     this.graphic = new Graphic(canvas, 10)
     this.game = null
     this.score = 0
+    this.level = level
+    this.startLevel = level
+    this.lines = 0
     this._setScore = _setScore
     this._goToMemu = _goToMemu
+    this._setLevel = _setLevel
   }
+
   draw() {
     if (this.graphicForNext) {
       this.graphicForNext.clear()
@@ -52,25 +57,28 @@ export default class TetrisGame {
     this.graphic.drawBoardByGrid(this.board)
     this.graphic.drawGameObject(this.block)
   }
+
   move(event) {
     const tmp = event.keyCode - 38
-    if (Math.abs(tmp) <= 1) {
+    if (Math.abs(tmp) == 1) {
       const testBlock = cloneDeep(this.block)
-      if (tmp == 0) {
-        testBlock.turnBlock()
-        if (this.board.isPossibleSetBlock(testBlock)) {
-          this.block.turnBlock()
-          this.draw()
-        }
-      } else {
-        testBlock.ind.j += tmp
-        if (this.board.isPossibleSetBlock(testBlock)) {
-          this.block.ind.j += tmp
-          this.draw()
-        }
+      testBlock.ind.j += tmp
+      if (this.board.isPossibleSetBlock(testBlock)) {
+        this.block.ind.j += tmp
+        this.draw()
       }
+    } else if (Math.abs(tmp) == 0) {
+      const testBlock = cloneDeep(this.block)
+      testBlock.turnBlock()
+      if (this.board.isPossibleSetBlock(testBlock)) {
+        this.block.turnBlock()
+        this.draw()
+      }
+    } else if (Math.abs(tmp) == 2) {
+      this.down()
     }
   }
+
   down() {
     let log
     const testBlock = cloneDeep(this.block)
@@ -80,19 +88,27 @@ export default class TetrisGame {
     } else {
       log = this.board.pushBlock(this.block)
       this.block = cloneDeep(this.nextBlock)
-      this.nextBlock = new Block({i: 1, j: 5},
-        blockImages[Math.floor(Math.random() * blockImages.length)])
+      this.nextBlock = new Block(
+        {i: 1, j: 5},
+        blockImages[Math.floor(Math.random() * blockImages.length)]
+      )
     }
     this.draw()
     if (log == "loose") {
       this.stop()
     } else if (log > 0) {
-      this.score += log
+      this.lines += log
+      this.score += log * log * this.level * this.level
       this._setScore(this.score)
+      this.level = Math.min(this.startLevel + ~~(this.lines / 15), 16)
+      this._setLevel(this.level)
+      clearInterval(this.game)
+      this.game = setInterval(this.down.bind(this), (17 - this.level) * 40)
     }
   }
+
   play() {
-    this.game = setInterval(this.down.bind(this), 200)
+    this.game = setInterval(this.down.bind(this), (17 - this.level) * 40)
     document.addEventListener('keydown', this.move.bind(this))
   }
   stop() {

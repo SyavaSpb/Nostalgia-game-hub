@@ -36,7 +36,8 @@ export default function MainBlock__BattleRoyale() {
   useEffect(() => {
     if (me.name && status[1] == "connecting lobby") {
       setStatus("def", "join room")
-    } else if (me.roomid && status[1] == "joining random room") {
+    }
+    if (me.roomid >= 100 && status[1] != "joined room") {
       setStatus("def", "joined room")
       requester.current = setInterval(() => getRoominf(me), 200)
     }
@@ -46,7 +47,7 @@ export default function MainBlock__BattleRoyale() {
   useEffect(() => {
     if (room.state == "game") {
       if (!game) {
-        setGame(new Sapper(canvasRef.current, 8, setMove))
+        setGame(new Sapper(canvasRef.current, 14, setMove))
       } else {
         game.setGrid(room.game.grid)
         game.draw()
@@ -70,26 +71,50 @@ export default function MainBlock__BattleRoyale() {
   if (status[1] == "connecting lobby") {
 
     output =
-    <div> connecting to lobby... </div>
+    <div className="menu">
+      <div className="menu__item text-center">
+        <span className="text-teletoon tittle-m text-white">
+          connecting to lobby...
+        </span>
+      </div>
+    </div>
 
   } else if (status[1] == "join room") {
 
     output =
-    <>
-      <div> choose join room </div>
+    <div className="menu">
       <div
-        className="button-standart"
+        className="menu__item button-standart text-center"
         onClick={() => setStatus("def", "joining random room")}
       >
-        random room
+        <span className="text-teletoon text-l text-white">
+          join random room
+        </span>
       </div>
-      <div className="button-standart"> by id </div>
-    </>
+      <div className="menu__item">
+        <input
+          className="input-standart input-roomid text-teletoon input-standart text-m"
+          type="text"
+          placeholder="Enter room id..."
+        />
+        <div className="button-standart text-center">
+          <span className="text-teletoon text-l text-white">
+            join room by id
+          </span>
+        </div>
+      </div>
+    </div>
 
   } else if (status[1] == "joining random room") {
 
     output =
-    <div> joining to room... </div>
+    <div className="menu">
+      <div className="menu__item text-center">
+        <span className="text-teletoon tittle-m text-white">
+          joining to room...
+        </span>
+      </div>
+    </div>
 
   } else if (status[1] == "joined room") {
 

@@ -7,6 +7,7 @@ module.exports = class Player {
     this.isLoose = false
     this.isMove = false
     this.isConnect = null
+    this.roomid = -1
   }
 
   setName(name) {
@@ -32,7 +33,7 @@ module.exports = class Player {
       ready: this.ready,
       isLoose: this.isLoose,
       isMove: this.isMove,
-      isActive: this.isActive
+      isConnect: this.isConnect
     }
     if (this.isMove) {
       result.moveTime = Math.floor((this.timeEndMove - Date.now()) / 1000)

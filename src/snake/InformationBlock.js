@@ -30,7 +30,7 @@ export default function InformationBlock({ score, status, level }) {
 
   return (
     <div className="information">
-      <Auth />
+      <Auth isLogout={true} />
       {recordBlock}
       <div className="box text-center information__item">
         <span className="text-teletoon text-m text-white"> level: </span>

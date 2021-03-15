@@ -11,8 +11,7 @@ export default function MainBlock_sapper() {
 
   let output
   if (status[0] == "choose mode") {
-    output =
-    <MainBlock__ChooseMode />
+    output = <MainBlock__ChooseMode />
   } else if (status[0] == "single mode") {
     output = <MainBlock__Single />
   } else if (status[0] == "battle royale mode") {

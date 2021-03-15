@@ -69,7 +69,7 @@ export default function MainBlock__Single() {
           <div> choose size of board </div>
           <div className="mainBlock__boardSizes">
             <div
-              className="mainBlock__boardSize text-center text-teletoon text-m text-white back-orange"
+              className={"mainBlock__boardSize text-center text-teletoon text-m text-white back-orange" + }
               onClick={() => setProperty([8, 10, 10])}
             >
               10 * 8 <br/> 10 mines

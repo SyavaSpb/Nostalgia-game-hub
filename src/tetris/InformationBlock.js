@@ -22,6 +22,7 @@ export default function InformationBlock({ score, status, level }) {
   if (status == "play") {
     next =
     <div className="nextContainer box">
+      <div className="text-center text-teletoon text-l text-white">Next:</div>
       <canvas id="next"></canvas>
     </div>
   }
@@ -38,7 +39,7 @@ export default function InformationBlock({ score, status, level }) {
 
   return (
     <div className="information">
-      <Auth />
+      <Auth isLogout={true} />
       {recordBlock}
       <div className="box text-center information__item">
         <span className="text-teletoon text-m text-white"> level: </span>

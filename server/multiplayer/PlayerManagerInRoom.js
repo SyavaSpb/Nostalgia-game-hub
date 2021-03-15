@@ -1,13 +1,12 @@
 module.exports = class PlayerManagerInRoom {
-  constructor(players, watchers, state) {
+  constructor(players, watchers, state, id) {
     this.players = players
     this.watchers = watchers
-    tis.state = state
-    const chekingForConnect = setInterval(checkingConnect.bind(this), 1000)
+    this.state = state
+    const chekingConnect = setInterval(this.checkConnect.bind(this), 1000)
   }
 
   addPlayer(player) {
-    player.setRoom(this.id)
     if (this.state == "game") {
       this.watchers.push(player)
     } else {
@@ -48,9 +47,6 @@ module.exports = class PlayerManagerInRoom {
   changeReady(player) {
     if (this.state == "wait") {
       player.changeReady()
-      if (this.checkReady()) {
-        this.initGame()
-      }
       return "ready is changed"
     } else {
       return "fail"

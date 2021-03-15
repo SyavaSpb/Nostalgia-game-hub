@@ -69,7 +69,7 @@ export default function MainBlock({ status, setStatus, setScore, levelState }) {
         </div>
         <a className="text-clean" href={hrefMenu}>
           <div className="button-standart text-center menu__item">
-            <span className="text-teletoon text-l text-white"> go to menu </span>
+            <span className="text-teletoon text-l text-white"> menu </span>
           </div>
         </a>
       </div>

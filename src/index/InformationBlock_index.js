@@ -39,7 +39,7 @@ export default function App() {
 
   return (
     <aside className="information information-index">
-      <Auth />
+      <Auth isLogout={true} />
       {recordsBlock}
     </aside>
   )

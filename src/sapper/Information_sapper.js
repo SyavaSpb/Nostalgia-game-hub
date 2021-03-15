@@ -19,7 +19,7 @@ export default function Information_sapper() {
 
   return (
     <aside className="information">
-      <Auth />
+      <Auth isLogout={status[0] != "battle royale mode"} />
       {output}
     </aside>
   )
