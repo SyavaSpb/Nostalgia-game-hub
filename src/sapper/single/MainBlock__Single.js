@@ -6,6 +6,16 @@ import useRecords from './../../hooks/useRecords'
 import {Sapper} from './../sapper'
 import SupperGame from '../../../server/SupperServer'
 
+import config from './../../../config.json'
+const MODE = config.mode
+const PORT = config.port
+const HOST = config.host
+let hrefMenu = "http://" + HOST
+if (MODE == "development") {
+  hrefMenu += ":"
+  hrefMenu += PORT
+}
+
 export default function MainBlock__Single() {
   const { userData, token } = useAuthContext()
   const isAuthenticated = token != null
@@ -19,9 +29,14 @@ export default function MainBlock__Single() {
 
   function openModal(record = null) {
     if (record !== null && isAuthenticated) {
-      const records = { tetris: record }
-      updateRecords(userData, records)
-        .then(() => setStatus("single mode", "custom"))
+      const key = property.join("*")
+      const records = {
+        sapper: {
+          [key]: this.score
+        }
+      }
+      // updateRecords(userData, records)
+      //   .then(() => setStatus("single mode", "custom"))
     } else {
       setStatus("single mode", "custom")
     }
@@ -42,12 +57,12 @@ export default function MainBlock__Single() {
       game.setGrid(localServer.forClient().grid)
       game.draw()
       // localServer.play()
-      // setScore(0)
     }
   }, [localServer, game])
 
   useEffect(() => {
     if (status[1] == "play") {
+      // console.log(move)
       const moveLog = localServer.move(move.i, move.j)
       game.setGrid(localServer.forClient().grid)
       game.draw()
@@ -66,22 +81,24 @@ export default function MainBlock__Single() {
     <div className="modal">
       <div className="modal__inner menu box text-center">
         <div className="menu__item">
-          <div> choose size of board </div>
           <div className="mainBlock__boardSizes">
             <div
-              className={"mainBlock__boardSize text-center text-teletoon text-m text-white back-orange" + }
+              className={"mainBlock__boardSize text-center text-teletoon text-m text-white" +
+                (property[0] == 8 ? " back-orange" : "")}
               onClick={() => setProperty([8, 10, 10])}
             >
               10 * 8 <br/> 10 mines
             </div>
             <div
-              className="mainBlock__boardSize text-center text-teletoon text-m text-white"
+              className={"mainBlock__boardSize text-center text-teletoon text-m text-white" +
+                (property[0] == 14 ? " back-orange" : "")}
               onClick={() => setProperty([14, 18, 40])}
             >
               18 * 14 <br/> 40 mines
             </div>
             <div
-              className="mainBlock__boardSize text-center text-teletoon text-m text-white"
+              className={"mainBlock__boardSize text-center text-teletoon text-m text-white" +
+                (property[0] == 20 ? " back-orange" : "")}
               onClick={() => setProperty([20, 24, 99])}
             >
               24 * 20 <br/> 99 mines
@@ -89,11 +106,17 @@ export default function MainBlock__Single() {
           </div>
         </div>
         <div
-          className="mainBlock__button button-standart text-center"
+          className="menu__item button-standart text-center"
           onClick={() => startGame()}
         >
           <span className="text-teletoon text-m text-white">Play</span>
         </div>
+        <a
+          className="menu__item button-standart text-clean text-center"
+          href={hrefMenu}
+        >
+          <span className="text-teletoon text-m text-white">Menu</span>
+        </a>
       </div>
     </div>
   }

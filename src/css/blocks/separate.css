@@ -28,14 +28,6 @@
   width: 75%;
   height: 100%;
 }
-.mainBlock__menu {
-  position: relative;
-  padding: 5vh 0;
-}
-.mainBlock__button {
-  width: 50%;
-  margin: 14px auto;
-}
 /* исправить */
 #game {
   width: 100%;

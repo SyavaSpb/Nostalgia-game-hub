@@ -3,5 +3,6 @@
 }
 
 .menu__item {
+  display: block;
   margin: 7% auto;
 }
