@@ -1,4 +1,4 @@
-const Room = require('./room')
+const Room = require('./Room')
 
 module.exports = class RoomManager {
   constructor() {
