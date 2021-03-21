@@ -2,9 +2,7 @@ const SupperGame = require('./../SupperServer.js')
 const PlayerManagerInRoom = require('./PlayerManagerInRoom.js')
 
 module.exports = class Room {
-  constructor(_removeRoom) {
-    this.players = new Array()
-    this.watchers = new Array()
+  constructor(roomid, _removeRoom) {
     this.state = "wait"
     this.property = {
       sapperProperty: {
@@ -13,21 +11,25 @@ module.exports = class Room {
         mines: 40
       }
     }
+    this.id = roomid
     this._removeRoom = _removeRoom
-    this.playerManager = new PlayerManagerInRoom(
-      this.players, this.watchers, this.state
-    )
+    this.playerManager = new PlayerManagerInRoom(this.state, _removeRoom)
+  }
+
+  setState(str) {
+    this.state = str
+    this.playerManager.state = str
   }
 
   setid(roomid) {
     this.id = roomid
   }
 
+
   addPlayer(player) {
     this.playerManager.addPlayer(player)
     player.setRoom(this.id)
   }
-
   changeReady(player) {
     const log = this.playerManager.changeReady(player)
     if (this.playerManager.checkReady()) {
@@ -37,32 +39,29 @@ module.exports = class Room {
     return log
   }
 
+
   initGame() {
     this.game = new SupperGame(14, 18, 50)
-    this.players.forEach(player => {
-      player.isLoose = false
-      player.isMove = false
-    })
-    // this.startGame()
+    this.playerManager.initPlayers()
   }
-
   startGame() {
-    this.state = "game"
-    this.players[0].isMove = true
-    this.players[0].timeEndMove = Date.now() + 1000 * 30
-    if (this.chekingLobby) {
-      clearInterval(this.checkPlayersInLobby)
-    }
-    this.checkingGame = setInterval(this.checkGame.bind(this), 500)
+    this.setState("game")
+    this.playerManager.nextPlayer()
+    this.startCheckingGame()
     this.game.startGame()
   }
 
+  startCheckingGame() {
+    this.checkingGame = setInterval(this.checkGame.bind(this), 500)
+  }
+  stopCheckingGame() {
+    clearInterval(this.checkingGame)
+  }
   checkGame() {
-    const playerMove = this.players.filter(player => player.isMove)[0]
+    const playerMove = this.playerManager.getPlayerMove()
     if (playerMove.timeEndMove - Date.now() < 500) {
       playerMove.isLoose = true
-      playerMove.isMove = false
-      const log = this.playerManager.nextPlayer(this.players.indexOf(playerMove))
+      const log = this.playerManager.nextPlayer()
       if (log == "end") {
         this.endGame()
       }
@@ -73,14 +72,13 @@ module.exports = class Room {
     let log = ''
     if (player.isMove) {
       // is possible move
-      player.isMove = false
+      // player.isMove = false
       const res = this.game.move(i, j)
-      console.log(res)
       if (res == 'mine') {
         player.isLoose = true
         log = 'loose'
       }
-      const logNext = this.playerManager.nextPlayer(this.players.indexOf(player))
+      const logNext = this.playerManager.nextPlayer()
       if (logNext == "end") {
         this.endGame()
       }
@@ -91,34 +89,16 @@ module.exports = class Room {
   }
 
   endGame() {
-    clearInterval(this.checkingGame)
+    this.stopCheckingGame()
     this.game = null
-    this.players = this.players.filter(player => {
-      if (Date.now() - player.date < 1000 * 30) {
-        return true
-      } else {
-        player.setRoom(-1)
-        return false
-      }
-    })
-    this.watchers.forEach(watchcer => {
-      this.players.push(watchcer)
-    })
-    this.wathcers = new Array()
-    this.players.forEach(player => {
-      player.ready = false
-    })
-    this.state = "wait"
-    if (this.checkTimeMoves) {
-      clearInterval(this.checkTimeMoves)
-    }
-    console.log("end")
+    this.playerManager.deletePlayers()
+    this.playerManager.watchersToPlayers()
+    this.playerManager.resetReady()
+    this.setState("wait")
   }
 
   forClient() {
-    const playersForCLient = this.players.map(player => {
-      return player.forClient()
-    })
+    const playersForCLient = this.playerManager.forClient()
     const result = {
       players: playersForCLient,
       state: this.state

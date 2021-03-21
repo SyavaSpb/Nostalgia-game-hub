@@ -7,6 +7,8 @@ async function gameRequestsHandler(requestUrl, req, res, playerManager, roomMana
     let result = { log: "server error" }
     if (requestUrl[1] == 'joinlobby') {
       result = await GameRequests.joinlobby(data, playerManager, roomManager)
+    } else if (requestUrl[1] == 'lobbyinf') {
+      result = await GameRequests.lobbyinf(data, playerManager, roomManager)
     } else if (requestUrl[1] == 'joinroom') {
       result = await GameRequests.joinroom(data, playerManager, roomManager)
     } else if (requestUrl[1] == 'getroominf') {

@@ -25,22 +25,31 @@ module.exports = class RoomManager {
         return this.rooms.get(id)
       }
     }
-    const room = new Room(this.removeRoom.bind(this))
-    this.addRoom(room)
-    return room
+    // const room = new Room(this.removeRoom.bind(this))
+    // this.addRoom(room)
+    // return room
+    return this.newRoom()
   }
 
-  addRoom(room) {
+  newRoom() {
     for (let id = 100; id < 999; id++) {
       if (!this.rooms.has(id)) {
-        room.setid(id)
+        // room.setid(id)
+        const room = new Room(id, () => this.removeRoom(id))
         this.rooms.set(id, room)
-        return
+        return room
       }
     }
   }
 
   log() {
     console.log("Amoung of rooms: ", this.rooms.size)
+  }
+
+  forClient() {
+    const result = {
+      amoungRooms: this.rooms.size
+    }
+    return result
   }
 }

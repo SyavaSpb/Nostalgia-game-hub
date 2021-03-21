@@ -11,6 +11,20 @@ module.exports = class GameRequests {
   }
 
 
+  static async lobbyinf(data, playerManager, roomManager) {
+    const player = playerManager.getPlayerById(data.player.id)
+    player.updateDate()
+    const result = {
+      lobby: Object.assign(
+        playerManager.forClient(),
+        roomManager.forClient()
+      ),
+      log: "ok"
+    }
+    return result
+  }
+
+
   static async joinroom(data, playerManager, roomManager) {
     const room = roomManager.getRoom()
     const player = playerManager.getPlayerById(data.player.id)

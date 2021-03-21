@@ -9,10 +9,11 @@ export function useBattleRoyaleContext() {
 export function BattleRoyaleProvider({ children }) {
   const [me, setMe] = useState({})
   const [room, setRoom] = useState({})
+  const [lobby, setLobby] = useState({})
 
   return (
     <BattleRoyaleContext.Provider value={{
-      me, setMe, room, setRoom
+      me, setMe, room, setRoom, lobby, setLobby
     }}>
       { children }
     </BattleRoyaleContext.Provider>

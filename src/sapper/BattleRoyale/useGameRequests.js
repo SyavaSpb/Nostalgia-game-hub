@@ -6,24 +6,29 @@ export default function useGameRequests(HOST, PORT, setMe, setRoom) {
   const { forceUpdate } = useForceUpdate()
 
   function joinLobby(name) {
-    // setStatus("connecting lobby")
     const body = {player: {name: name}}
     serverRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/joinlobby", body)
       .then(data => {
         console.log("jl", data)
         setMe(data.player)
-        // setStatus("join room")
+      })
+  }
+
+  function lobbyInf(me, setLobby) {
+    const body = {player: me}
+    serverRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/lobbyinf", body)
+      .then(data => {
+        console.log("li", data)
+        setLobby(data.lobby)
       })
   }
 
   function joinRandomRoom(me) {
-    // setStatus("connecting room")
     const body = {player: me}
     serverRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/joinroom", body)
       .then(data => {
         console.log("jrr", data)
         setMe(data.player)
-        // setStatus("customization room")
       })
   }
 
@@ -31,7 +36,7 @@ export default function useGameRequests(HOST, PORT, setMe, setRoom) {
     const body = {player: me}
     serverRequest('POST', "http://" + HOST + ":" + PORT + "/gamerequest/getroominf", body)
       .then(data => {
-        // console.log("gri", data)
+        console.log("gri", data)
         setRoom(data.room)
         // if (data.room.state == "game") {
         //   setGrid(data.room.game.grid)
@@ -70,6 +75,7 @@ export default function useGameRequests(HOST, PORT, setMe, setRoom) {
 
   return {
     joinLobby: joinLobby,
+    lobbyInf: lobbyInf,
     joinRandomRoom: joinRandomRoom,
     getRoominf: getRoominf,
     toggleReady: toggleReady,

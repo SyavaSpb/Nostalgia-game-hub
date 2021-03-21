@@ -14,10 +14,11 @@ export default function MainBlock__BattleRoyale() {
   const { status, setStatus } = useStatusContext()
   const { userData, token } = useAuthContext()
   const isAuthenticated = token != null
-  const {me, setMe, room, setRoom} = useBattleRoyaleContext()
-  const { joinLobby, joinRandomRoom, getRoominf, sendMove } =
+  const {me, setMe, room, setRoom, setLobby} = useBattleRoyaleContext()
+  const { joinLobby, joinRandomRoom, getRoominf, sendMove, lobbyInf } =
     useGameRequests(HOST, PORT, setMe, setRoom)
   const requester = useRef(null)
+  const lobbyRequester = useRef(null)
   const [game, setGame] = useState(null)
   const canvasRef = useRef(null)
   const [move, setMove] = useState({})
@@ -25,10 +26,15 @@ export default function MainBlock__BattleRoyale() {
 
 
   useEffect(() => {
+    clearInterval(lobbyRequester.current)
     if (status[1] == "connecting lobby") {
       joinLobby(userData.login)
+    } else if (status[1] == "join room") {
+      lobbyInf(me, setLobby)
+      lobbyRequester.current = setInterval(() => lobbyInf(me, setLobby), 2000)
     } else if (status[1] == "joining random room") {
       joinRandomRoom(me)
+      console.log("joining")
     }
   }, [status])
 
@@ -40,6 +46,7 @@ export default function MainBlock__BattleRoyale() {
     if (me.roomid >= 100 && status[1] != "joined room") {
       setStatus("def", "joined room")
       requester.current = setInterval(() => getRoominf(me), 200)
+      console.log("joined")
     }
   }, [me])
 
@@ -85,6 +92,13 @@ export default function MainBlock__BattleRoyale() {
     <div className="menu">
       <div
         className="menu__item button-standart text-center"
+      >
+        <span className="text-teletoon text-l text-white">
+          new room
+        </span>
+      </div>
+      <div
+        className="menu__item button-standart text-center"
         onClick={() => setStatus("def", "joining random room")}
       >
         <span className="text-teletoon text-l text-white">
@@ -102,6 +116,13 @@ export default function MainBlock__BattleRoyale() {
             join room by id
           </span>
         </div>
+      </div>
+      <div
+        className="menu__item button-standart text-center"
+      >
+        <span className="text-teletoon text-l text-white">
+          menu
+        </span>
       </div>
     </div>
 
