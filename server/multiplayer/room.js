@@ -2,7 +2,7 @@ const SupperGame = require('./../SupperServer.js')
 const PlayerManagerInRoom = require('./PlayerManagerInRoom.js')
 
 module.exports = class Room {
-  constructor(roomid, _removeRoom) {
+  constructor(roomid) {
     this.state = "wait"
     this.property = {
       sapperProperty: {
@@ -12,8 +12,7 @@ module.exports = class Room {
       }
     }
     this.id = roomid
-    this._removeRoom = _removeRoom
-    this.playerManager = new PlayerManagerInRoom(this.state, _removeRoom)
+    this.playerManager = new PlayerManagerInRoom(this.state)
   }
 
   setState(str) {
@@ -23,6 +22,10 @@ module.exports = class Room {
 
   setid(roomid) {
     this.id = roomid
+  }
+
+  empty() {
+    return this.playerManager.players.length == 0
   }
 
 

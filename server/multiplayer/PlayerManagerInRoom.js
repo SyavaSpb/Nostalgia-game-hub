@@ -1,9 +1,8 @@
 module.exports = class PlayerManagerInRoom {
-  constructor(state, _removeRoom) {
+  constructor(state) {
     this.players = new Array()
     this.watchers = new Array()
     this.state = state
-    this._removeRoom = _removeRoom
     this.startCheckingConnect()
   }
 
@@ -54,9 +53,6 @@ module.exports = class PlayerManagerInRoom {
         return false
       }
     })
-    if (this.players.length == 0) {
-      this._removeRoom()
-    }
   }
 
   mixPlayers() {

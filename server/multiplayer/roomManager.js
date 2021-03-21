@@ -1,17 +1,28 @@
-const Room = require('./room')
+const Room = require('./Room')
 
 module.exports = class RoomManager {
   constructor() {
     this.rooms = new Map()
 
     // setInterval(this.log.bind(this), 1000)
+    this.startCheckingRooms()
   }
 
-  checkRoom() {
-
+  startCheckingRooms() {
+    this.checkingRooms = setInterval(this.checkRooms.bind(this), 1000 * 5)
+  }
+  checkRooms() {
+    for (let id = 100; id < 999; id++) {
+      if (this.rooms.has(id)) {
+        if (this.rooms.get(id).empty()) {
+          this.removeRoom(id)
+        }
+      }
+    }
   }
 
   removeRoom(roomid) {
+    delete this.rooms.get(roomid)
     this.rooms.delete(roomid)
   }
 
@@ -35,7 +46,7 @@ module.exports = class RoomManager {
     for (let id = 100; id < 999; id++) {
       if (!this.rooms.has(id)) {
         // room.setid(id)
-        const room = new Room(id, () => this.removeRoom(id))
+        const room = new Room(id)
         this.rooms.set(id, room)
         return room
       }
