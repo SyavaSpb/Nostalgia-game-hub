@@ -103,7 +103,8 @@ module.exports = class Room {
   forClient() {
     const playersForCLient = this.playerManager.forClient()
     const result = {
-      players: playersForCLient,
+      players: playersForCLient.players,
+      watchers: playersForCLient.watchers,
       state: this.state
     }
     if (this.game) {

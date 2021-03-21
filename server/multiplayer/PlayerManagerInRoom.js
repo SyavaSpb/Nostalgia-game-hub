@@ -24,6 +24,16 @@ module.exports = class PlayerManagerInRoom {
       this.checkPlayersInLobby()
     }
   }
+  checkPlayersInLobby() {
+    this.players = this.players.filter(player => {
+      if (Date.now() - player.date < 1000 * 15) {
+        return true
+      } else {
+        player.setRoom(-1)
+        return false
+      }
+    })
+  }
 
   addPlayer(player) {
     if (this.state == "game") {
@@ -42,17 +52,6 @@ module.exports = class PlayerManagerInRoom {
 
   getPlayerMove() {
     return this.players.filter(player => player.isMove)[0]
-  }
-
-  checkPlayersInLobby() {
-    this.players = this.players.filter(player => {
-      if (Date.now() - player.date < 1000 * 15) {
-        return true
-      } else {
-        player.setRoom(-1)
-        return false
-      }
-    })
   }
 
   mixPlayers() {
@@ -124,6 +123,13 @@ module.exports = class PlayerManagerInRoom {
     const playersForCLient = this.players.map(player => {
       return player.forClient()
     })
-    return playersForCLient
+    const watchersForCLient = this.watchers.map(player => {
+      return player.forClient()
+    })
+    const result = {
+      players: playersForCLient,
+      watchers: watchersForCLient
+    }
+    return result
   }
 }
