@@ -1,6 +1,0 @@
-@import url('../css/lib.css');
-
-.container-snake {
-  width: min(82vh, 99vw);
-  height: min(99vh, 120vw);
-}

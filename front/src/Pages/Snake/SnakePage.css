@@ -1,0 +1,4 @@
+.container-snakePage {
+  width: min(82vh, 99vw);
+  height: min(99vh, 120vw);
+}

@@ -1,0 +1,14 @@
+{
+  "name": "nostalgiс-games-hub-engine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "SyavaSpb",
+  "license": "ISC",
+  "dependencies": {
+    "lodash.clonedeep": "^4.5.0"
+  }
+}

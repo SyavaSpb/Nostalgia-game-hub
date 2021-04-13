@@ -1,48 +1,18 @@
 {
-  "name": "nostalgia-games-hub",
-  "version": "1.10.2",
+  "name": "nostalgic-games-hub",
+  "version": "1.0.0",
   "description": "",
-  "private": true,
+  "main": "index.js",
   "scripts": {
-    "dev": "node config dev && webpack && node server/server",
-    "startpm2": "node config prod && webpack && pm2 start server/server.js",
-    "start": "node config prod && webpack && node server/server"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SyavaSpb/Nostalgia-game-hub.git"
+    "start": "concurrently \"gulp\" \"npm run start --prefix front\"",
+    "install-all": "npm i && cd front && npm i && cd .."
   },
   "author": "SyavaSpb",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/SyavaSpb/Nostalgia-game-hub/issues"
-  },
-  "homepage": "https://github.com/SyavaSpb/Nostalgia-game-hub#readme",
   "devDependencies": {
-    "@babel/core": "^7.13.8",
-    "@babel/preset-env": "^7.13.8",
-    "@babel/preset-react": "^7.12.13",
-    "babel-loader": "^8.2.2",
-    "clean-webpack-plugin": "^3.0.0",
-    "copy-webpack-plugin": "^7.0.0",
-    "css-loader": "^5.0.2",
-    "file-loader": "^6.2.0",
-    "html-webpack-plugin": "^5.1.0",
-    "mini-css-extract-plugin": "^1.3.8",
-    "nodemon": "^2.0.7",
-    "optimize-css-assets-webpack-plugin": "^5.0.4",
-    "style-loader": "^2.0.0",
-    "terser-webpack-plugin": "^5.1.1",
-    "webpack": "^5.23.0",
-    "webpack-cli": "^4.5.0"
+    "concurrently": "^6.0.0",
+    "del": "^6.0.0",
+    "gulp": "^4.0.2"
   },
-  "dependencies": {
-    "bcrypt": "^5.0.1",
-    "cell-games-front": "^1.3.4",
-    "jsonwebtoken": "^8.5.1",
-    "lodash.clonedeep": "^4.5.0",
-    "mongodb": "^3.6.4",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
-  }
+  "dependencies": {}
 }

@@ -1,0 +1,23 @@
+.title-l { font-size: 80px; }
+.title-m { font-size: 30px; }
+.title-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.text-teletoon { font-family: "Teletoon"; }
+.text-pixel { font-family: "Pixel"; }
+.text-l { font-size: 25px; }
+.text-m { font-size: 20px; }
+.text-s { font-size: 14px; }
+.text-center { text-align: center; }
+.text-bold { font-weight: bold; }
+.text-lighter { font-weight: lighter; }
+.text-up { text-transform: uppercase; }
+.text-clean { text-decoration: none; }
+.text-orange { color: #f0a830; }
+.text-white { color: #fbeab7; }
+.text-red { color: #f03330; }
+.back-red { background-color: #f03330; }
+.back-orange { background-color: #f0a830; }
